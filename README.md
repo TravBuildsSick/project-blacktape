@@ -7,6 +7,9 @@ against files on disk.
 
 This document describes what the repo does and how to build/run it today.
 For the longer-term pitch and planned features, see [VISION.md](VISION.md).
+The initial commit ships without source comments; the rationale they held
+(crash-driven size/depth caps, filter edge cases, parser fixes, etc.) is
+preserved in [docs/removed-comments.html](docs/removed-comments.html).
 
 ## Layout
 
@@ -137,9 +140,6 @@ All `blacktape_brain` analysis functions (`align`, `timeline`, `analytics`,
 against both synthetic and real export data. The desktop GUI (`bt-gui`) —
 including the batched/streaming ingest flow and the separate GPS map
 window — builds and runs under a real display.
-
-See [CLAUDE.md](CLAUDE.md) for a more detailed, module-by-module status
-breakdown and the running list of known issues.
 
 ## License
 
