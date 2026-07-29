@@ -1,0 +1,302 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>project-blacktape — GPS map</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  :root {
+    --bg: #05070a;
+    --panel-bg: #0a0f16;
+    --border: #5fe0e850;
+    --accent: #5fe0e8;
+    --ok-green: #5be08a;
+    --text: #b9eef2;
+    --muted: #6fa8ad;
+  }
+  html, body { height: 100%; margin: 0; padding: 0; background: var(--bg); }
+  body {
+    display: flex;
+    font-family: "DejaVu Sans Mono", "Courier New", monospace;
+    color: var(--text);
+  }
+
+  #panel {
+    width: 250px;
+    flex: none;
+    height: 100%;
+    box-sizing: border-box;
+    background: var(--bg);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 14px 12px;
+  }
+  #map { flex: 1; height: 100%; background: var(--bg); }
+
+  h1 {
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--text);
+    margin: 0 0 12px 0;
+    font-weight: 700;
+  }
+  h2 {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin: 18px 0 8px 0;
+    font-weight: 400;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 4px;
+  }
+
+  button {
+    font-family: inherit;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--text);
+    background: var(--panel-bg);
+    border: 1px solid var(--border);
+    padding: 6px 8px;
+    cursor: pointer;
+  }
+  button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+  button:disabled { opacity: 0.35; cursor: default; }
+  button.active { border-color: var(--ok-green); color: var(--ok-green); }
+
+  .row-buttons { display: flex; gap: 6px; }
+  .row-buttons button { flex: 1; }
+
+  #day-list { display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
+  .day-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    padding: 5px 6px;
+    border: 1px solid var(--border);
+    background: var(--panel-bg);
+    cursor: pointer;
+  }
+  .day-row:hover { border-color: var(--accent); }
+  .day-row.selected { border-color: var(--accent); color: var(--accent); background: #123038; }
+  .day-row .day-count { color: var(--muted); }
+  .day-row.selected .day-count { color: var(--accent); }
+
+  #point-status {
+    font-size: 11px;
+    color: var(--muted);
+    margin: 8px 0;
+    min-height: 28px;
+    line-height: 1.4;
+  }
+
+  .bt-popup { font-family: inherit; font-size: 12px; color: #05070a; }
+
+  .leaflet-control-zoom a {
+    background: var(--panel-bg) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+  }
+  .leaflet-control-zoom a:hover { color: var(--accent) !important; }
+  .leaflet-control-attribution {
+    background: rgba(5, 7, 10, 0.75) !important;
+    color: var(--muted) !important;
+  }
+  .leaflet-control-attribution a { color: var(--accent) !important; }
+</style>
+</head>
+<body>
+<div id="panel">
+  <h1>GPS MAP</h1>
+
+  <h2>DAYS</h2>
+  <div class="row-buttons">
+    <button id="select-all-btn">ALL</button>
+    <button id="select-none-btn">NONE</button>
+  </div>
+  <div id="day-list"></div>
+
+  <h2>POINT</h2>
+  <div id="point-status">(no points selected)</div>
+  <div class="row-buttons">
+    <button id="prev-btn" disabled>&#9664; PREV</button>
+    <button id="next-btn" disabled>NEXT &#9654;</button>
+  </div>
+
+  <h2>PATH</h2>
+  <button id="line-btn" style="width: 100%; box-sizing: border-box;">[ ] DRAW LINE</button>
+</div>
+<div id="map"></div>
+<script>
+  const map = L.map('map', { zoomControl: true }).setView([20, 0], 2);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    maxZoom: 20,
+    subdomains: 'abcd',
+    attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+  }).addTo(map);
+
+  let dayData = {};
+  let selectedDays = new Set();
+  let sortedPoints = [];
+  let currentIndex = -1;
+  let lineOn = false;
+  let lineLayer = null;
+  const markerGroup = L.layerGroup().addTo(map);
+
+  function markerStyle(selected) {
+    return {
+      radius: selected ? 8 : 5,
+      color: selected ? "#5be08a" : "#5fe0e8",
+      weight: selected ? 2 : 1,
+      fillColor: selected ? "#5be08a" : "#5fe0e8",
+      fillOpacity: selected ? 0.9 : 0.65,
+    };
+  }
+
+  function popupHtml(p) {
+    return `<div class="bt-popup">${p.day || ""}<br>${p.timestamp || ""}<br>${p.lat.toFixed(5)}, ${p.lon.toFixed(5)}</div>`;
+  }
+
+  function renderDayList() {
+    const container = document.getElementById("day-list");
+    container.innerHTML = "";
+    const days = Object.keys(dayData).sort();
+    for (const day of days) {
+      const count = (dayData[day] || []).length;
+      const row = document.createElement("div");
+      row.className = "day-row" + (selectedDays.has(day) ? " selected" : "");
+      const chk = document.createElement("span");
+      chk.textContent = selectedDays.has(day) ? "[x] " + day : "[ ] " + day;
+      const cnt = document.createElement("span");
+      cnt.className = "day-count";
+      cnt.textContent = count;
+      row.appendChild(chk);
+      row.appendChild(cnt);
+      row.onclick = () => {
+        if (selectedDays.has(day)) {
+          selectedDays.delete(day);
+        } else {
+          selectedDays.add(day);
+        }
+        renderDayList();
+        recompute();
+      };
+      container.appendChild(row);
+    }
+  }
+
+  function updatePointStatus() {
+    const el = document.getElementById("point-status");
+    const prevBtn = document.getElementById("prev-btn");
+    const nextBtn = document.getElementById("next-btn");
+    if (sortedPoints.length === 0 || currentIndex < 0) {
+      el.textContent = "(no points selected)";
+      prevBtn.disabled = true;
+      nextBtn.disabled = true;
+      return;
+    }
+    const p = sortedPoints[currentIndex];
+    el.textContent = `${currentIndex + 1} / ${sortedPoints.length}\n${p.timestamp || ""}\n${p.lat.toFixed(5)}, ${p.lon.toFixed(5)}`;
+    el.style.whiteSpace = "pre-line";
+    prevBtn.disabled = currentIndex <= 0;
+    nextBtn.disabled = currentIndex >= sortedPoints.length - 1;
+  }
+
+  function highlightCurrent() {
+    sortedPoints.forEach((p, i) => {
+      if (p._marker) p._marker.setStyle(markerStyle(i === currentIndex));
+    });
+  }
+
+  function selectPoint(i) {
+    if (i < 0 || i >= sortedPoints.length) return;
+    currentIndex = i;
+    const p = sortedPoints[i];
+    map.panTo([p.lat, p.lon]);
+    p._marker.openPopup();
+    highlightCurrent();
+    updatePointStatus();
+  }
+
+  function updateLine() {
+    if (lineLayer) {
+      map.removeLayer(lineLayer);
+      lineLayer = null;
+    }
+    if (lineOn && sortedPoints.length > 1) {
+      lineLayer = L.polyline(
+        sortedPoints.map((p) => [p.lat, p.lon]),
+        { color: "#5be08a", weight: 2, opacity: 0.85, dashArray: "4 4" }
+      ).addTo(map);
+    }
+  }
+
+  function recompute() {
+    markerGroup.clearLayers();
+    sortedPoints = [];
+    for (const day of selectedDays) {
+      for (const p of dayData[day] || []) {
+        if (typeof p.lat === "number" && typeof p.lon === "number") {
+          sortedPoints.push(Object.assign({ day }, p));
+        }
+      }
+    }
+    sortedPoints.sort((a, b) => (a.timestamp || "").localeCompare(b.timestamp || ""));
+
+    const bounds = [];
+    sortedPoints.forEach((p, i) => {
+      const marker = L.circleMarker([p.lat, p.lon], markerStyle(false));
+      marker.bindPopup(popupHtml(p));
+      marker.on("click", () => selectPoint(i));
+      marker.addTo(markerGroup);
+      p._marker = marker;
+      bounds.push([p.lat, p.lon]);
+    });
+
+    if (bounds.length > 0) {
+      map.fitBounds(bounds, { maxZoom: 15, padding: [30, 30] });
+    }
+
+    currentIndex = sortedPoints.length > 0 ? Math.min(Math.max(currentIndex, 0), sortedPoints.length - 1) : -1;
+    updateLine();
+    updatePointStatus();
+    highlightCurrent();
+  }
+
+  window.setData = function (data) {
+    dayData = data || {};
+    selectedDays = new Set(Object.keys(dayData));
+    currentIndex = -1;
+    renderDayList();
+    recompute();
+  };
+
+  if (window.__btPending) {
+    window.__btPending.forEach(window.setData);
+    window.__btPending = null;
+  }
+
+  document.getElementById("prev-btn").onclick = () => selectPoint(currentIndex - 1);
+  document.getElementById("next-btn").onclick = () => selectPoint(currentIndex + 1);
+  document.getElementById("select-all-btn").onclick = () => {
+    selectedDays = new Set(Object.keys(dayData));
+    renderDayList();
+    recompute();
+  };
+  document.getElementById("select-none-btn").onclick = () => {
+    selectedDays = new Set();
+    renderDayList();
+    recompute();
+  };
+  document.getElementById("line-btn").onclick = (e) => {
+    lineOn = !lineOn;
+    e.target.textContent = lineOn ? "[x] DRAW LINE" : "[ ] DRAW LINE";
+    e.target.classList.toggle("active", lineOn);
+    updateLine();
+  };
+</script>
+</body>
+</html>

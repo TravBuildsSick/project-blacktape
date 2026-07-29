@@ -1,0 +1,480 @@
+import { ListView, ScrollView } from "std-widgets.slint";
+
+export struct NavItem {
+    label: string,
+    enabled: bool,
+}
+
+export struct ChatMessageEntry {
+    sender: string,
+    timestamp: string,
+    content: string,
+}
+
+export struct FriendRow {
+    identity: string,
+    categories: string,
+    created: string,
+    modified: string,
+}
+
+export struct ConversationBox {
+    conversation: string,
+    label: string,
+    message-count: int,
+    since: string,
+    until: string,
+    expanded: bool,
+    loaded: bool,
+    messages: [ChatMessageEntry],
+}
+
+export component AppWindow inherits Window {
+    title: "project-blacktape";
+    background: #05070a;
+    min-width: 1000px;
+    min-height: 650px;
+    default-font-family: "monospace";
+
+    in-out property <string> page-label: "HOME";
+    in-out property <int> selected-nav: 0;
+    in property <[NavItem]> nav-items;
+    in property <[string]> log-lines;
+    in property <string> main-body-text: "";
+    in property <[ConversationBox]> conversation-boxes;
+    in property <[FriendRow]> friend-rows;
+    in property <bool> has-data: false;
+    in property <bool> busy: false;
+
+    in property <string> friend-sort-identity-badge: "";
+    in property <string> friend-sort-categories-badge: "";
+    in property <string> friend-sort-created-badge: "";
+    in property <string> friend-sort-modified-badge: "";
+
+    callback nav-selected(int);
+    callback insert-data();
+    callback insert-files();
+    callback purge-data();
+    callback conversation-toggled(int);
+
+    callback friend-sort-clicked(string, bool);
+
+    property <color> accent: #5fe0e8;
+    property <color> accent-dim: #5fe0e850;
+    property <color> ok-green: #5be08a;
+    property <bool> blink-on: true;
+
+    property <bool> pulse-on: true;
+
+    Timer {
+        interval: 800ms;
+        running: true;
+        triggered => { root.blink-on = !root.blink-on; }
+    }
+
+    Timer {
+        interval: 650ms;
+        running: root.busy;
+        triggered => { root.pulse-on = !root.pulse-on; }
+    }
+
+    Rectangle {
+        width: 100%;
+        height: 100%;
+        background: #05070a;
+        clip: true;
+
+        Rectangle {
+            x: parent.width * 0.15 - self.width / 2;
+            y: parent.height * 0.10 - self.height / 2;
+            width: 900px;
+            height: 700px;
+            background: @radial-gradient(circle, #23375f9c 0%, transparent 65%);
+        }
+        Rectangle {
+            x: parent.width * 0.85 - self.width / 2;
+            y: parent.height * 0.25 - self.height / 2;
+            width: 800px;
+            height: 900px;
+            background: @radial-gradient(circle, #14285080 0%, transparent 60%);
+        }
+        Rectangle {
+            x: parent.width * 0.30 - self.width / 2;
+            y: parent.height * 0.90 - self.height / 2;
+            width: 1000px;
+            height: 800px;
+            background: @radial-gradient(circle, #192d5a73 0%, transparent 65%);
+        }
+        Rectangle {
+            x: parent.width * 0.90 - self.width / 2;
+            y: parent.height * 0.85 - self.height / 2;
+            width: 700px;
+            height: 600px;
+            background: @radial-gradient(circle, #0f1e4180 0%, transparent 60%);
+        }
+
+        VerticalLayout {
+            padding: 0px;
+            spacing: 0px;
+
+            Rectangle {
+                height: 54px;
+                border-width: 0px;
+                border-color: accent-dim;
+                background: transparent;
+                HorizontalLayout {
+                    padding-left: 28px;
+                    padding-right: 28px;
+                    alignment: space-between;
+                    Text {
+                        vertical-alignment: center;
+                        text: "DATA PORTAL // " + root.page-label;
+                        color: #d2f5f8;
+                        font-size: 13px;
+                        letter-spacing: 3px;
+                        font-weight: 700;
+                    }
+                    HorizontalLayout {
+                        spacing: 8px;
+                        alignment: end;
+
+                        Rectangle {
+                            width: 26px;
+                            height: 26px;
+                            y: (parent.height - self.height) / 2;
+
+                            Rectangle {
+                                width: root.busy ? (root.pulse-on ? 26px : 14px) : 7px;
+                                height: self.width;
+                                x: (parent.width - self.width) / 2;
+                                y: (parent.height - self.height) / 2;
+                                border-radius: self.width / 2;
+                                background: @radial-gradient(circle, #e0c85ba0 0%, #e0c85b00 70%);
+                                opacity: root.busy ? 1.0 : 0.0;
+                                animate width, height, opacity { duration: 650ms; easing: ease-in-out; }
+                            }
+
+                            Rectangle {
+                                width: root.busy ? (root.pulse-on ? 11px : 7px) : 7px;
+                                height: self.width;
+                                x: (parent.width - self.width) / 2;
+                                y: (parent.height - self.height) / 2;
+                                border-radius: self.width / 2;
+                                background: root.busy ? #e0c85b : ok-green;
+                                opacity: root.busy ? 1.0 : (root.blink-on ? 1.0 : 0.15);
+                                animate width, height, opacity { duration: 650ms; easing: ease-in-out; }
+                            }
+                        }
+                        Text {
+                            vertical-alignment: center;
+                            text: root.busy ? "STATUS: WORKING" : "STATUS: ACTIVE";
+                            color: root.busy ? (root.pulse-on ? #f5dc7a : #e0c85b) : ok-green;
+                            font-size: 11px;
+                            letter-spacing: 2px;
+                            animate color { duration: 650ms; easing: ease-in-out; }
+                        }
+                    }
+                }
+                Rectangle {
+                    y: parent.height - 1px;
+                    height: 1px;
+                    width: 100%;
+                    background: accent-dim;
+                }
+            }
+
+            HorizontalLayout {
+                padding: 24px;
+                spacing: 24px;
+
+                Rectangle {
+                    width: 210px;
+                    border-width: 1px;
+                    border-color: accent-dim;
+                    background: transparent;
+                    VerticalLayout {
+                        padding: 18px;
+                        spacing: 14px;
+                        alignment: start;
+                        for item[i] in root.nav-items : Text {
+                            text: item.label;
+                            color: i == root.selected-nav ? accent : (item.enabled ? #9fd6dc : #3f5458);
+                            font-size: 12px;
+                            letter-spacing: 2px;
+                            TouchArea {
+                                clicked => {
+                                    if (item.enabled) {
+                                        root.nav-selected(i);
+                                    }
+                                }
+                            }
+                        }
+
+                        Rectangle {
+                            height: 1px;
+                            background: accent-dim;
+                        }
+
+                        Text {
+                            text: "+ INSERT DIRECTORY";
+                            color: root.busy ? #3f5458 : #9fd6dc;
+                            font-size: 11px;
+                            letter-spacing: 1px;
+                            TouchArea {
+                                clicked => { if (!root.busy) { root.insert-data(); } }
+                            }
+                        }
+                        Text {
+                            text: "+ INSERT FILE(S)";
+                            color: root.busy ? #3f5458 : #9fd6dc;
+                            font-size: 11px;
+                            letter-spacing: 1px;
+                            TouchArea {
+                                clicked => { if (!root.busy) { root.insert-files(); } }
+                            }
+                        }
+                        Text {
+                            text: "× PURGE DATA";
+                            color: (root.busy || !root.has-data) ? #3f5458 : #e0806b;
+                            font-size: 11px;
+                            letter-spacing: 1px;
+                            TouchArea {
+                                clicked => { if (!root.busy && root.has-data) { root.purge-data(); } }
+                            }
+                        }
+                    }
+                }
+
+                Rectangle {
+                    border-width: 1px;
+                    border-color: accent-dim;
+                    background: transparent;
+
+                    if !root.has-data : Rectangle {
+                        width: 100%;
+                        height: 100%;
+                        TouchArea {
+                            clicked => { root.insert-data(); }
+                        }
+                        Text {
+                            x: (parent.width - self.width) / 2;
+                            y: (parent.height - self.height) / 2;
+                            text: root.busy ? "[ PARSING... ]" : "[ INSERT DATA ]";
+                            color: #4fb8c0;
+                            font-size: 16px;
+                            letter-spacing: 4px;
+                        }
+                    }
+
+                    if root.has-data && root.selected-nav != 4 && root.selected-nav != 2 : ScrollView {
+                        width: 100%;
+                        height: 100%;
+                        VerticalLayout {
+                            padding: 16px;
+                            alignment: start;
+                            Text {
+                                text: root.main-body-text;
+                                color: #b9eef2;
+                                font-size: 12px;
+                                wrap: word-wrap;
+                            }
+                        }
+                    }
+
+                    if root.has-data && root.selected-nav == 2 : ScrollView {
+                        width: 100%;
+                        height: 100%;
+                        VerticalLayout {
+                            padding: 16px;
+                            spacing: 6px;
+                            alignment: start;
+
+                            Text {
+                                text: "Click a column to sort by it; shift-click another to add it as a tiebreaker.";
+                                color: #3f5458;
+                                font-size: 10px;
+                                letter-spacing: 1px;
+                            }
+
+                            HorizontalLayout {
+                                padding-bottom: 6px;
+                                Rectangle {
+                                    width: 220px;
+                                    HorizontalLayout {
+                                        Text { text: "IDENTITY " + root.friend-sort-identity-badge; color: #6fa8ad; font-size: 11px; letter-spacing: 1px; }
+                                    }
+                                    TouchArea {
+                                        pointer-event(event) => {
+                                            if (event.kind == PointerEventKind.up) {
+                                                root.friend-sort-clicked("identity", event.modifiers.shift);
+                                            }
+                                        }
+                                    }
+                                }
+                                Rectangle {
+                                    width: 200px;
+                                    HorizontalLayout {
+                                        Text { text: "CATEGORIES " + root.friend-sort-categories-badge; color: #6fa8ad; font-size: 11px; letter-spacing: 1px; }
+                                    }
+                                    TouchArea {
+                                        pointer-event(event) => {
+                                            if (event.kind == PointerEventKind.up) {
+                                                root.friend-sort-clicked("categories", event.modifiers.shift);
+                                            }
+                                        }
+                                    }
+                                }
+                                Rectangle {
+                                    width: 160px;
+                                    HorizontalLayout {
+                                        Text { text: "CREATED " + root.friend-sort-created-badge; color: #6fa8ad; font-size: 11px; letter-spacing: 1px; }
+                                    }
+                                    TouchArea {
+                                        pointer-event(event) => {
+                                            if (event.kind == PointerEventKind.up) {
+                                                root.friend-sort-clicked("created", event.modifiers.shift);
+                                            }
+                                        }
+                                    }
+                                }
+                                Rectangle {
+                                    HorizontalLayout {
+                                        Text { text: "MODIFIED " + root.friend-sort-modified-badge; color: #6fa8ad; font-size: 11px; letter-spacing: 1px; }
+                                    }
+                                    TouchArea {
+                                        pointer-event(event) => {
+                                            if (event.kind == PointerEventKind.up) {
+                                                root.friend-sort-clicked("modified", event.modifiers.shift);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            Rectangle { height: 1px; background: accent-dim; }
+
+                            if root.friend-rows.length == 0 : Text {
+                                text: "(no friend records ingested)";
+                                color: #6fa8ad;
+                                font-size: 12px;
+                            }
+
+                            for row in root.friend-rows : HorizontalLayout {
+                                padding-top: 4px;
+                                padding-bottom: 4px;
+                                Text { text: row.identity; width: 220px; color: #b9eef2; font-size: 12px; overflow: elide; }
+                                Text { text: row.categories; width: 200px; color: accent; font-size: 12px; wrap: word-wrap; }
+                                Text { text: row.created; width: 160px; color: #6fa8ad; font-size: 12px; }
+                                Text { text: row.modified; color: #6fa8ad; font-size: 12px; }
+                            }
+                        }
+                    }
+
+                    if root.has-data && root.selected-nav == 4 : ScrollView {
+                        width: 100%;
+                        height: 100%;
+                        VerticalLayout {
+                            padding: 16px;
+                            spacing: 10px;
+                            alignment: start;
+
+                            if root.conversation-boxes.length == 0 : Text {
+                                text: "(no chat messages ingested)";
+                                color: #6fa8ad;
+                                font-size: 12px;
+                            }
+
+                            for box[i] in root.conversation-boxes : Rectangle {
+                                border-width: 1px;
+                                border-color: box.expanded ? accent : accent-dim;
+                                background: #0a0f16;
+
+                                VerticalLayout {
+                                    padding: 12px;
+                                    spacing: 8px;
+                                    alignment: start;
+
+                                    Rectangle {
+                                        height: 34px;
+                                        HorizontalLayout {
+                                            alignment: space-between;
+                                            Text {
+                                                vertical-alignment: center;
+                                                text: (box.expanded ? "[-] " : "[+] ") + box.label;
+                                                color: box.expanded ? accent : #b9eef2;
+                                                font-size: 13px;
+                                                letter-spacing: 1px;
+                                            }
+                                            Text {
+                                                vertical-alignment: center;
+                                                text: box.message-count + " msgs  ·  " + box.since + " → " + box.until;
+                                                color: #6fa8ad;
+                                                font-size: 11px;
+                                            }
+                                        }
+                                        TouchArea {
+                                            clicked => { root.conversation-toggled(i); }
+                                        }
+                                    }
+
+                                    if box.expanded : Rectangle {
+                                        border-width: 1px;
+                                        border-color: accent-dim;
+                                        background: transparent;
+                                        VerticalLayout {
+                                            padding: 10px;
+                                            spacing: 6px;
+                                            alignment: start;
+
+                                            if box.expanded && !box.loaded : Text {
+                                                text: "[ loading... ]";
+                                                color: #6fa8ad;
+                                                font-size: 11px;
+                                            }
+
+                                            for msg in box.messages : Text {
+                                                text: "[" + msg.timestamp + "] " + msg.sender + ": " + msg.content;
+                                                color: #b9eef2;
+                                                font-size: 11px;
+                                                wrap: word-wrap;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            HorizontalLayout {
+                padding-left: 24px;
+                padding-right: 24px;
+                padding-bottom: 24px;
+                Rectangle {
+                    height: 150px;
+                    border-width: 1px;
+                    border-color: accent-dim;
+                    background: transparent;
+
+                    VerticalLayout {
+                        padding: 12px;
+                        spacing: 6px;
+                        Text {
+                            text: "SYSTEM LOG";
+                            color: #6fa8ad;
+                            font-size: 11px;
+                            letter-spacing: 2px;
+                        }
+                        ListView {
+                            for line in root.log-lines : Text {
+                                text: line;
+                                color: accent;
+                                font-size: 11px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

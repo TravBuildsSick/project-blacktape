@@ -1,0 +1,15 @@
+#!/bin/sh
+
+pattern='(^|/)samples/|(^|/)test_data/|(^|/)local_samples/|takeout|Takeout|mydata|location_history|semantic_location_history|memories_history|chat_history|timeline_edits|timelineEdits|\.result\.json$'
+
+matches=$(git diff --cached --name-only | grep -E "$pattern")
+
+if [ -n "$matches" ]; then
+  echo "BLOCKED: commit includes file(s) matching a personal-data export pattern:" >&2
+  echo "$matches" | sed 's/^/  /' >&2
+  echo "" >&2
+  echo "If this is genuinely safe to commit, use: git commit --no-verify" >&2
+  exit 1
+fi
+
+exit 0

@@ -1,0 +1,1523 @@
+<title>project-blacktape — Removed Comments Reference</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #e9e3d3;
+  --panel: #f4efe0;
+  --ink: #201f1a;
+  --ink-dim: #6c6552;
+  --accent: #a03a24;
+  --accent-soft: #e9d3c4;
+  --border: #d2c9ac;
+  --marker-bg: #f4efe0;
+  --marker-border: #b6ab86;
+  --code-bg: #ece5cf;
+  --stamp: #a03a24;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14130f;
+    --panel: #1c1a13;
+    --ink: #e8e1cd;
+    --ink-dim: #a49a7d;
+    --accent: #dd7c56;
+    --accent-soft: #3a281c;
+    --border: #3a3524;
+    --marker-bg: #1c1a13;
+    --marker-border: #4a4530;
+    --code-bg: #221f16;
+    --stamp: #dd7c56;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14130f; --panel: #1c1a13; --ink: #e8e1cd; --ink-dim: #a49a7d;
+  --accent: #dd7c56; --accent-soft: #3a281c; --border: #3a3524;
+  --marker-bg: #1c1a13; --marker-border: #4a4530; --code-bg: #221f16; --stamp: #dd7c56;
+}
+:root[data-theme="light"] {
+  --bg: #e9e3d3; --panel: #f4efe0; --ink: #201f1a; --ink-dim: #6c6552;
+  --accent: #a03a24; --accent-soft: #e9d3c4; --border: #d2c9ac;
+  --marker-bg: #f4efe0; --marker-border: #b6ab86; --code-bg: #ece5cf; --stamp: #a03a24;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+  line-height: 1.6;
+}
+.layout {
+  display: flex;
+  min-height: 100vh;
+  max-width: 100%;
+}
+.sidebar {
+  width: 300px;
+  flex: 0 0 300px;
+  border-right: 1px solid var(--border);
+  padding: 1.75rem 1.25rem;
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+.sidebar h1 {
+  font-size: 1.05rem;
+  margin: 0 0 0.25rem;
+  letter-spacing: 0.01em;
+}
+.sidebar .subtitle {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+  margin: 0 0 1.5rem;
+  line-height: 1.4;
+}
+.nav-group-title {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin: 1.3rem 0 0.4rem;
+}
+.nav-group:first-of-type .nav-group-title { margin-top: 0; }
+.nav-link {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  align-items: baseline;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.82rem;
+  color: var(--ink-dim);
+  text-decoration: none;
+  padding: 0.32rem 0.5rem;
+  border-radius: 6px;
+  margin: 0 -0.5rem;
+}
+.nav-link:hover { background: var(--accent-soft); color: var(--ink); }
+.nav-link.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.nav-count {
+  font-size: 0.68rem;
+  color: var(--ink-dim);
+  opacity: 0.7;
+  flex: 0 0 auto;
+}
+.main {
+  flex: 1;
+  min-width: 0;
+  padding: 3rem clamp(1.25rem, 4vw, 4.5rem) 6rem;
+}
+.intro {
+  max-width: 62ch;
+  margin-bottom: 3rem;
+  padding-bottom: 2.25rem;
+  border-bottom: 1px solid var(--border);
+}
+.intro h1 {
+  font-size: 1.9rem;
+  margin: 0 0 0.75rem;
+}
+.intro p { color: var(--ink-dim); }
+.page { display: none; max-width: 72ch; }
+.page.active { display: block; }
+.page-kicker {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 0.3rem;
+}
+.page h2 {
+  font-size: 1.55rem;
+  margin: 0 0 2rem;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-weight: 600;
+  word-break: break-word;
+}
+.entry {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.entry:last-child { border-bottom: none; }
+.entry h3 {
+  font-size: 1.08rem;
+  margin: 0 0 0.6rem;
+  color: var(--ink);
+}
+.entry p {
+  margin: 0 0 0.85rem;
+  color: var(--ink);
+}
+.entry p:last-of-type { margin-bottom: 1rem; }
+.marker {
+  display: inline-block;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.76rem;
+  letter-spacing: 0.02em;
+  color: var(--stamp);
+  background: var(--marker-bg);
+  border: 1px solid var(--marker-border);
+  padding: 0.22rem 0.65rem;
+  border-radius: 2px;
+}
+.empty-note {
+  color: var(--ink-dim);
+  font-style: italic;
+}
+.pager {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.85rem;
+}
+.pager a { color: var(--accent); text-decoration: none; }
+.pager a:hover { text-decoration: underline; }
+@media (max-width: 780px) {
+  .layout { flex-direction: column; }
+  .sidebar { width: 100%; flex: none; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border); }
+  .main { padding: 2rem 1.25rem 4rem; }
+}
+</style>
+
+<div class="layout">
+  <nav class="sidebar">
+    <h1>Removed Comments Reference</h1>
+    <p class="subtitle">project-blacktape &mdash; every comment stripped from the codebase before its first public commit, restated in full and cross-referenced to its original location.</p>
+    <div class="nav-group"><div class="nav-group-title">Rust parsers</div>
+<a class="nav-link" href="#parsers-common-src-lib-rs" data-target="parsers-common-src-lib-rs">common — shared walking, size caps, source detection<span class="nav-count">20</span></a>
+<a class="nav-link" href="#parsers-bt-parse-gps-src-main-rs" data-target="parsers-bt-parse-gps-src-main-rs">bt-parse-gps — GPS/location export scanner<span class="nav-count">10</span></a>
+<a class="nav-link" href="#parsers-bt-parse-friends-src-main-rs" data-target="parsers-bt-parse-friends-src-main-rs">bt-parse-friends — friends/ranking export scanner<span class="nav-count">14</span></a>
+<a class="nav-link" href="#parsers-bt-parse-google-src-main-rs" data-target="parsers-bt-parse-google-src-main-rs">bt-parse-google — Timeline Edits signal scanner<span class="nav-count">18</span></a>
+<a class="nav-link" href="#parsers-bt-parse-chat-src-main-rs" data-target="parsers-bt-parse-chat-src-main-rs">bt-parse-chat — recursive chat message scanner<span class="nav-count">27</span></a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Python brain</div>
+<a class="nav-link" href="#brain-src-blacktape-brain-align-py" data-target="brain-src-blacktape-brain-align-py">align.py — timestamp normalization<span class="nav-count">3</span></a>
+<a class="nav-link" href="#brain-src-blacktape-brain-classify-py" data-target="brain-src-blacktape-brain-classify-py">classify.py — source-system detection<span class="nav-count">4</span></a>
+<a class="nav-link" href="#brain-src-blacktape-brain-planner-py" data-target="brain-src-blacktape-brain-planner-py">planner.py — file discovery and batching<span class="nav-count">3</span></a>
+<a class="nav-link" href="#brain-src-blacktape-brain-store-py" data-target="brain-src-blacktape-brain-store-py">store.py — SQLite incremental storage<span class="nav-count">2</span></a>
+<a class="nav-link" href="#brain-src-blacktape-brain-signals-py" data-target="brain-src-blacktape-brain-signals-py">signals.py — nearest-GPS-point matching<span class="nav-count">1</span></a>
+<a class="nav-link" href="#brain-src-blacktape-brain-explore-py" data-target="brain-src-blacktape-brain-explore-py">explore.py — browsable views<span class="nav-count">1</span></a>
+<a class="nav-link" href="#brain-src-blacktape-brain-cli-py" data-target="brain-src-blacktape-brain-cli-py">cli.py — ingest orchestration entrypoint<span class="nav-count">4</span></a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Python brain tests</div>
+<a class="nav-link" href="#brain-tests-test-align-py" data-target="brain-tests-test-align-py">test_align.py<span class="nav-count">8</span></a>
+<a class="nav-link" href="#brain-tests-test-cli-py" data-target="brain-tests-test-cli-py">test_cli.py<span class="nav-count">1</span></a>
+<a class="nav-link" href="#brain-tests-test-explore-py" data-target="brain-tests-test-explore-py">test_explore.py<span class="nav-count">2</span></a>
+<a class="nav-link" href="#brain-tests-test-mapview-py" data-target="brain-tests-test-mapview-py">test_mapview.py<span class="nav-count">1</span></a>
+<a class="nav-link" href="#brain-tests-test-planner-py" data-target="brain-tests-test-planner-py">test_planner.py<span class="nav-count">9</span></a>
+<a class="nav-link" href="#brain-tests-test-signals-py" data-target="brain-tests-test-signals-py">test_signals.py<span class="nav-count">2</span></a>
+<a class="nav-link" href="#brain-tests-test-store-py" data-target="brain-tests-test-store-py">test_store.py<span class="nav-count">4</span></a>
+<a class="nav-link" href="#brain-tests-test-timeline-py" data-target="brain-tests-test-timeline-py">test_timeline.py<span class="nav-count">1</span></a>
+</div>
+<div class="nav-group"><div class="nav-group-title">GUI (bt-gui)</div>
+<a class="nav-link" href="#gui-src-main-rs" data-target="gui-src-main-rs">main.rs — app entrypoint, ingest thread, page rendering<span class="nav-count">25</span></a>
+<a class="nav-link" href="#gui-src-parsers-rs" data-target="gui-src-parsers-rs">parsers.rs — locates and drives blacktape-brain<span class="nav-count">7</span></a>
+<a class="nav-link" href="#gui-src-mapview-client-rs" data-target="gui-src-mapview-client-rs">mapview_client.rs — drives the bt-mapview child process<span class="nav-count">5</span></a>
+<a class="nav-link" href="#gui-src-bin-bt-mapview-rs" data-target="gui-src-bin-bt-mapview-rs">bt-mapview.rs — standalone GPS map window<span class="nav-count">4</span></a>
+<a class="nav-link" href="#gui-ui-app-slint" data-target="gui-ui-app-slint">app.slint — main window UI<span class="nav-count">18</span></a>
+<a class="nav-link" href="#gui-ui-mapview-html" data-target="gui-ui-mapview-html">mapview.html — Leaflet map page<span class="nav-count">4</span></a>
+<a class="nav-link" href="#gui-cargo-toml" data-target="gui-cargo-toml">Cargo.toml<span class="nav-count">1</span></a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Scripts</div>
+<a class="nav-link" href="#scripts-launch-gui-sh" data-target="scripts-launch-gui-sh">launch-gui.sh<span class="nav-count">1</span></a>
+<a class="nav-link" href="#scripts-hooks-pre-commit" data-target="scripts-hooks-pre-commit">hooks/pre-commit<span class="nav-count">1</span></a>
+</div>
+  </nav>
+  <main class="main">
+    <div class="intro" id="intro-block">
+      <h1>Where the reasoning went</h1>
+      <p>Before this repository went public, every source comment was removed from the tracked code &mdash; project convention favors self-documenting code with no inline commentary. Many of those comments weren't throwaway notes: they recorded <em>why</em> a piece of logic exists &mdash; a bug that shipped, a real export sample that broke an assumption, a tradeoff between two designs. That reasoning is preserved here instead, one page per source file, so it isn't lost along with the comment syntax.</p>
+      <p>Each entry below reproduces one removed comment block in full and marks exactly where it used to live, in the form <code>(file, line)</code>, referring to the line number in the file as it existed with comments still in place.</p>
+    </div>
+    
+<section class="page" id="parsers-common-src-lib-rs" data-page="parsers-common-src-lib-rs">
+  <div class="page-kicker">Rust parsers</div>
+  <h2>parsers/common/src/lib.rs</h2>
+  <div class="entries">
+    
+<article class="entry" id="parsers-common-src-lib-rs-1">
+  <h3>How many directory levels below the export dir to recurse.</h3>
+  <p>How many directory levels below the export dir to recurse. Real export layouts (Snapchat&#x27;s `mydata~*` bundle, Google Takeout) keep their JSON within a couple of levels of the root; capping this bounds how much of an arbitrary directory (e.g. a user&#x27;s whole `~/Downloads`, accidentally pointed at instead of an export dir) gets walked and read.</p>
+  <div class="marker">(parsers/common/src/lib.rs, line 6–10)</div>
+</article>
+<article class="entry" id="parsers-common-src-lib-rs-2">
+  <h3>Files larger than this are skipped rather than read into memory.</h3>
+  <p>Files larger than this are skipped rather than read into memory. Real export JSON files are well under this; an oversized `.json` file elsewhere on disk (browser caches, lockfiles, app state dumps) is far more likely to be a memory-exhaustion hazard than genuine export data, so it&#x27;s skipped silently — no prompt, since there&#x27;s nothing a user could usefully confirm their way past here.</p>
+  <div class="marker">(parsers/common/src/lib.rs, line 13–18)</div>
+</article>
+<article class="entry" id="parsers-common-src-lib-rs-3">
+  <h3>Caps the *combined* size of files actually read across one `walk_and_parse_json_files`...</h3>
+  <p>Caps the *combined* size of files actually read across one `walk_and_parse_json_files` run. `MAX_JSON_FILE_BYTES` only bounds each file individually — a directory with many files that each pass that cap can still sum to a large amount of resident memory (parsed `serde_json::Value` trees typically cost several times the raw file size), which was slow/memory-heavy enough in practice to look like a hang even with the per-file cap and the GUI&#x27;s subprocess rlimit in place. Once the running total would exceed this, further files are skipped individually (not the whole run aborted), so the rest of a legitimate export still comes through.</p>
+  <div class="marker">(parsers/common/src/lib.rs, line 21–30)</div>
+</article>
+<article class="entry" id="parsers-common-src-lib-rs-4">
+  <h3>Reads and parses a single JSON file.</h3>
+  <p>Reads and parses a single JSON file. Returns `Ok(None)` (rather than reading the file at all) when it exceeds `MAX_JSON_FILE_BYTES`.</p>
+  <div class="marker">(parsers/common/src/lib.rs, line 44–45)</div>
+</article>
+<article class="entry" id="parsers-common-src-lib-rs-5">
+  <h3>Reads and parses one file, logging (to stderr) and returning `None` for anything...</h3>
+  <p>Reads and parses one file, logging (to stderr) and returning `None` for anything unreadable, oversized, or not valid JSON, rather than propagating an error — shared by both `walk_and_parse_json_files` and `read_json_files` so the two entry points log skip reasons identically.</p>
+  <div class="marker">(parsers/common/src/lib.rs, line 55–58)</div>
+</article>
+<article class="entry" id="parsers-common-src-lib-rs-6">
+  <h3>Walks `root` for `.json` files (bounded to `MAX_WALK_DEPTH`) and parses each one,...</h3>
+  <p>Walks `root` for `.json` files (bounded to `MAX_WALK_DEPTH`) and parses each one, skipping — with a note on stderr — anything unreadable, oversized, not valid JSON, or that would push the run&#x27;s combined size past `MAX_TOTAL_JSON_BYTES`. Every `bt-parse-*` binary used to duplicate this exact walk+read+parse+skip loop inline; centralized here so the size/depth caps apply uniformly instead of needing to be threaded through each binary separately.</p>
+  <div class="marker">(parsers/common/src/lib.rs, line 81–87)</div>
+</article>
+<article class="entry" id="parsers-common-src-lib-rs-7">
+  <h3>Reads and parses an explicit, caller-curated list of files — no directory walk, no...</h3>
+  <p>Reads and parses an explicit, caller-curated list of files — no directory walk, no `MAX_TOTAL_JSON_BYTES` aggregate cap. Meant for a caller (`blacktape_brain`&#x27;s batching orchestration) that has already decided which files belong in this run and in what order, e.g. to process a directory&#x27;s files smallest-first across several invocations instead of one binary trying to walk and hold the whole export in memory at once. Each file&#x27;s individual `MAX_JSON_FILE_BYTES` cap still applies, as a safety net in case a batch was curated incorrectly.</p>
+  <div class="marker">(parsers/common/src/lib.rs, line 119–126)</div>
+</article>
+<article class="entry" id="parsers-common-src-lib-rs-8">
+  <h3>`path` relative to `root`, with forward slashes.</h3>
+  <p>`path` relative to `root`, with forward slashes. Falls back to the path&#x27;s own file name when `root` points directly at `path` itself (`strip_prefix` then yields an empty string) — otherwise every filename-based heuristic (source-system detection, &quot;is this a friends/ranking/timeline-edits file&quot; checks, etc.) silently sees `&quot;&quot;` and matches nothing, e.g. when a user passes a single export file as the &quot;export directory&quot; argument instead of its containing directory.</p>
+  <div class="marker">(parsers/common/src/lib.rs, line 131–137)</div>
+</article>
+<article class="entry" id="parsers-common-src-lib-rs-9">
+  <h3>NOTE: these are the section names from Snapchat&#x27;s `location_history.json`.</h3>
+  <p>NOTE: these are the section names from Snapchat&#x27;s `location_history.json`. &quot;Frequent Locations&quot;, &quot;Latest Location&quot;, &quot;Daily Top Locations&quot;, &quot;Businesses and places you may have visited&quot;, and &quot;Areas you may have visited in the last two years&quot; were misfiled under GOOGLE_MARKERS in the legacy Python scanner, which misdetected real Snapchat exports as Google.</p>
+  <div class="marker">(parsers/common/src/lib.rs, line 187–191)</div>
+</article>
+<article class="entry" id="parsers-common-src-lib-rs-10">
+  <h3>Google&#x27;s actual Takeout location export uses different key names (e.g.</h3>
+  <p>Google&#x27;s actual Takeout location export uses different key names (e.g. &quot;locations&quot;, &quot;timelineObjects&quot;, &quot;timelineEdits&quot;) — &quot;Home &amp; Work&quot;, &quot;Timeline Edits&quot; haven&#x27;t been checked against a real Takeout sample yet.</p>
+  <div class="marker">(parsers/common/src/lib.rs, line 202–204)</div>
+</article>
+<article class="entry" id="parsers-common-src-lib-rs-11">
+  <h3>Identifies whether `filename`/`data` is recognizable Snapchat or Google export data,...</h3>
+  <p>Identifies whether `filename`/`data` is recognizable Snapchat or Google export data, filename first and falling back to top-level JSON key markers for ambiguous filenames.</p>
+<p>This consolidates what used to be two separate, disagreeing implementations: this function&#x27;s own filename-only version (dead code — nothing called it) and a filename-plus-content-marker version duplicated inline in `bt-parse-gps`. The two disagreed on some filenames (e.g. this one used to treat any `&quot;activity&quot;` substring or bare `&quot;google&quot;`/`&quot;snap&quot;` as decisive, which `bt-parse-gps`&#x27;s version didn&#x27;t), so callers other than `bt-parse-gps` were silently getting a worse answer. Now there&#x27;s one detector; every parser (and `blacktape_brain`) gets the same result for the same input.</p>
+  <div class="marker">(parsers/common/src/lib.rs, line 207–219)</div>
+</article>
+<article class="entry" id="parsers-common-src-lib-rs-12">
+  <h3>NOTE: deliberately no filename rule for &quot;location_history&quot; here — Snapchat&#x27;s own...</h3>
+  <p>NOTE: deliberately no filename rule for &quot;location_history&quot; here — Snapchat&#x27;s own location export is also named `location_history.json` (see SNAPCHAT_CONTENT_MARKERS below), so that filename can&#x27;t decide the source system on its own. It falls through to the content-marker check instead. An earlier version of this function did match on it by filename alone, which misdetected real Snapchat location exports as Google — the same class of bug the marker-list fix below guards against from the other direction.</p>
+  <div class="marker">(parsers/common/src/lib.rs, line 229–236)</div>
+</article>
+<article class="entry" id="parsers-common-src-lib-rs-13">
+  <h3>Snapchat&#x27;s key set is more distinctive/specific, so check it first.</h3>
+  <p>Snapchat&#x27;s key set is more distinctive/specific, so check it first.</p>
+  <div class="marker">(parsers/common/src/lib.rs, line 259)</div>
+</article>
+<article class="entry" id="parsers-common-src-lib-rs-14">
+  <h3>Sparse file</h3>
+  <p>Sparse file: cheap to create, still reports the oversized length `read_json_file` checks via metadata before ever reading it.</p>
+  <div class="marker">(parsers/common/src/lib.rs, line 331–332)</div>
+</article>
+<article class="entry" id="parsers-common-src-lib-rs-15">
+  <h3>depth 1 (direct child of root)</h3>
+  <p>depth 1 (direct child of root)</p>
+  <div class="marker">(parsers/common/src/lib.rs, line 341)</div>
+</article>
+<article class="entry" id="parsers-common-src-lib-rs-16">
+  <h3>depth MAX_WALK_DEPTH (should still be found)</h3>
+  <p>depth MAX_WALK_DEPTH (should still be found)</p>
+  <div class="marker">(parsers/common/src/lib.rs, line 343)</div>
+</article>
+<article class="entry" id="parsers-common-src-lib-rs-17">
+  <h3>depth MAX_WALK_DEPTH + 1 (should be skipped)</h3>
+  <p>depth MAX_WALK_DEPTH + 1 (should be skipped)</p>
+  <div class="marker">(parsers/common/src/lib.rs, line 347)</div>
+</article>
+<article class="entry" id="parsers-common-src-lib-rs-18">
+  <h3>Each file is individually well under MAX_JSON_FILE_BYTES, but three of them together...</h3>
+  <p>Each file is individually well under MAX_JSON_FILE_BYTES, but three of them together exceed a small test aggregate cap — the scenario MAX_TOTAL_JSON_BYTES exists to catch, exercised here via a small cap so the test doesn&#x27;t need to write real megabytes.</p>
+  <div class="marker">(parsers/common/src/lib.rs, line 379–382)</div>
+</article>
+<article class="entry" id="parsers-common-src-lib-rs-19">
+  <h3>Not under `dir` at all — read_json_files takes an explicit list, not a walk root, so...</h3>
+  <p>Not under `dir` at all — read_json_files takes an explicit list, not a walk root, so this is still picked up.</p>
+  <div class="marker">(parsers/common/src/lib.rs, line 399–400)</div>
+</article>
+<article class="entry" id="parsers-common-src-lib-rs-20">
+  <h3>Actual top-level keys from a real Snapchat `location_history.json`.</h3>
+  <p>Actual top-level keys from a real Snapchat `location_history.json`. Several of these (&quot;Frequent Locations&quot;, &quot;Latest Location&quot;, &quot;Daily Top Locations&quot;, &quot;Businesses and places you may have visited&quot;, &quot;Areas you may have visited in the last two years&quot;) were misfiled as Google markers in the legacy scanner, so this export used to misdetect as &quot;google&quot;. Filename here is deliberately ambiguous (doesn&#x27;t contain &quot;location_history&quot;) so this exercises the content-marker fallback, not the filename check.</p>
+  <div class="marker">(parsers/common/src/lib.rs, line 438–445)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="parsers-bt-parse-gps-src-main-rs" data-page="parsers-bt-parse-gps-src-main-rs">
+  <div class="page-kicker">Rust parsers</div>
+  <h2>parsers/bt-parse-gps/src/main.rs</h2>
+  <div class="entries">
+    
+<article class="entry" id="parsers-bt-parse-gps-src-main-rs-1">
+  <h3>Port of the legacy `gps_scanner.py` GPSScanner.</h3>
+  <p>Port of the legacy `gps_scanner.py` GPSScanner. Heuristically hunts for lat/lon pairs and timestamps across heterogeneous export JSON.</p>
+<p>Ported close to verbatim from `parsers/legacy_reference/gps_scanner.py` — see that file for the reference implementation being mirrored here.</p>
+  <div class="marker">(parsers/bt-parse-gps/src/main.rs, line 1–5)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-gps-src-main-rs-2">
+  <h3>Mirrors Python truthiness for JSON values, since the legacy scanner leans on `a or b...</h3>
+  <p>Mirrors Python truthiness for JSON values, since the legacy scanner leans on `a or b or c` key-fallback chains.</p>
+  <div class="marker">(parsers/bt-parse-gps/src/main.rs, line 21–22)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-gps-src-main-rs-3">
+  <h3>Mirrors `obj.get(a) or obj.get(b) or ...`</h3>
+  <p>Mirrors `obj.get(a) or obj.get(b) or ...`: first key present with a truthy value.</p>
+  <div class="marker">(parsers/bt-parse-gps/src/main.rs, line 34)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-gps-src-main-rs-4">
+  <h3>Python&#x27;s `str(value)` for the JSON types this scanner encounters.</h3>
+  <p>Python&#x27;s `str(value)` for the JSON types this scanner encounters.</p>
+  <div class="marker">(parsers/bt-parse-gps/src/main.rs, line 41)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-gps-src-main-rs-5">
+  <h3>Rejects coordinates that can&#x27;t be real GPS fixes rather than plotting them</h3>
+  <p>Rejects coordinates that can&#x27;t be real GPS fixes rather than plotting them: out-of-range magnitudes (`hunt()`&#x27;s generic key/regex-based extraction has no built-in bounds check — a stray nearby number, or a unit mismatch, can produce a lat/lon in the thousands) and exact `(0, 0)` — &quot;null island&quot;, the standard sentinel many export schemas use for &quot;no location fix available&quot; instead of omitting the field, which otherwise plots as a real point in the Gulf of Guinea off the coast of Africa. Both were showing up as real-looking points on the map (Africa from null-island, Antarctica from out-of-range values wrapping into that latitude band) with nothing to explain why.</p>
+  <div class="marker">(parsers/bt-parse-gps/src/main.rs, line 99–108)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-gps-src-main-rs-6">
+  <h3>Extra positional args are an explicit, caller-curated file list (e.g.</h3>
+  <p>Extra positional args are an explicit, caller-curated file list (e.g. blacktape_brain batching a large export smallest-file-first) instead of the usual self-walk of export_dir.</p>
+  <div class="marker">(parsers/bt-parse-gps/src/main.rs, line 444–446)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-gps-src-main-rs-7">
+  <h3>Actual top-level keys from a real Snapchat `location_history.json`.</h3>
+  <p>Actual top-level keys from a real Snapchat `location_history.json`. Several of these (&quot;Frequent Locations&quot;, &quot;Latest Location&quot;, &quot;Daily Top Locations&quot;, &quot;Businesses and places you may have visited&quot;, &quot;Areas you may have visited in the last two years&quot;) were misfiled as Google markers in the legacy scanner, so this export used to misdetect as &quot;google&quot;.</p>
+  <div class="marker">(parsers/bt-parse-gps/src/main.rs, line 477–482)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-gps-src-main-rs-8">
+  <h3>A real export using (0, 0) as a &quot;no location fix&quot; placeholder instead of omitting the...</h3>
+  <p>A real export using (0, 0) as a &quot;no location fix&quot; placeholder instead of omitting the field used to plot as a real point off the coast of Africa.</p>
+  <div class="marker">(parsers/bt-parse-gps/src/main.rs, line 579–581)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-gps-src-main-rs-9">
+  <h3>hunt()&#x27;s regex-based extraction has no bounds check of its own; a stray nearby number...</h3>
+  <p>hunt()&#x27;s regex-based extraction has no bounds check of its own; a stray nearby number or unit mismatch can produce a magnitude outside any real lat/lon range (e.g. wrapping into Antarctica&#x27;s latitude band once genuinely out of range).</p>
+  <div class="marker">(parsers/bt-parse-gps/src/main.rs, line 588–591)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-gps-src-main-rs-10">
+  <h3>Only exact (0, 0) is treated as the null-island sentinel — a real point merely close...</h3>
+  <p>Only exact (0, 0) is treated as the null-island sentinel — a real point merely close to the equator/meridian on one axis must still be accepted.</p>
+  <div class="marker">(parsers/bt-parse-gps/src/main.rs, line 598–600)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="parsers-bt-parse-friends-src-main-rs" data-page="parsers-bt-parse-friends-src-main-rs">
+  <div class="page-kicker">Rust parsers</div>
+  <h2>parsers/bt-parse-friends/src/main.rs</h2>
+  <div class="entries">
+    
+<article class="entry" id="parsers-bt-parse-friends-src-main-rs-1">
+  <h3>Port of the legacy `friends_scanner.py` FriendsScanner.</h3>
+  <p>Port of the legacy `friends_scanner.py` FriendsScanner. Extracts friend relationship records (friends, blocked users, pending requests, etc.) and account ranking/statistics from Snapchat-style export files.</p>
+<p>Ported close to verbatim from `parsers/legacy_reference/friends_scanner.py` — see that file for the reference implementation being mirrored here.</p>
+  <div class="marker">(parsers/bt-parse-friends/src/main.rs, line 1–7)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-friends-src-main-rs-2">
+  <h3>Mirrors `FriendsScanner.FRIEND_KEYS`.</h3>
+  <p>Mirrors `FriendsScanner.FRIEND_KEYS`. Keys are matched after `.strip().lower()`, so this list is already lowercase.</p>
+  <div class="marker">(parsers/bt-parse-friends/src/main.rs, line 18–19)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-friends-src-main-rs-3">
+  <h3>Content-derived</h3>
+  <p>Content-derived: mirrors the record&#x27;s own `&quot;Source&quot;` key (e.g. how the friend was added), *not* the originating filename — unlike gps/google&#x27;s `source` field. Kept as-is for compatibility with what `_normalize_friend` already produced; see `file` below for filename provenance.</p>
+  <div class="marker">(parsers/bt-parse-friends/src/main.rs, line 37–41)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-friends-src-main-rs-4">
+  <h3>The export-relative filename this record was extracted from (see `relative_filename`...</h3>
+  <p>The export-relative filename this record was extracted from (see `relative_filename` in `parsers/common`) — threaded through so the brain-side ingest can attribute each record to a `files` row for provenance, the same way bt-parse-chat&#x27;s `source` field now does. A distinct field from `source` above since that name was already taken by unrelated content, unlike gps/google where `source` itself is the filename.</p>
+  <div class="marker">(parsers/bt-parse-friends/src/main.rs, line 44–50)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-friends-src-main-rs-5">
+  <h3>NOTE: this is a HashMap keyed by slugified category name (matching all 8...</h3>
+  <p>NOTE: this is a HashMap keyed by slugified category name (matching all 8 `FRIEND_KEYS`), not a fixed `friends`/`blocked_users` pair — the original stub scaffold had a rigid `Categories` struct with just those two fields, but `view_shaping_reference.py` treats `categories` as an open dict (`categories.items()`), so a fixed struct would silently drop the other 6 categories (deleted friends, pending requests, etc).</p>
+  <div class="marker">(parsers/bt-parse-friends/src/main.rs, line 62–67)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-friends-src-main-rs-6">
+  <h3>Mirrors Python truthiness for JSON values, since the legacy scanner leans on `a or b`...</h3>
+  <p>Mirrors Python truthiness for JSON values, since the legacy scanner leans on `a or b` key-fallback chains (e.g. `item.get(x) or &quot;&quot;`).</p>
+  <div class="marker">(parsers/bt-parse-friends/src/main.rs, line 74–75)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-friends-src-main-rs-7">
+  <h3>Python&#x27;s `str(value)` for the JSON types this scanner encounters.</h3>
+  <p>Python&#x27;s `str(value)` for the JSON types this scanner encounters.</p>
+  <div class="marker">(parsers/bt-parse-friends/src/main.rs, line 87)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-friends-src-main-rs-8">
+  <h3>Mirrors `str(item.get(key) or &quot;&quot;).strip()`.</h3>
+  <p>Mirrors `str(item.get(key) or &quot;&quot;).strip()`.</p>
+  <div class="marker">(parsers/bt-parse-friends/src/main.rs, line 96)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-friends-src-main-rs-9">
+  <h3>Mirrors `_slugify`.</h3>
+  <p>Mirrors `_slugify`.</p>
+  <div class="marker">(parsers/bt-parse-friends/src/main.rs, line 104)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-friends-src-main-rs-10">
+  <h3>Mirrors `_to_int`</h3>
+  <p>Mirrors `_to_int`: `if value in (None, &quot;&quot;): return 0; return int(float(value))`, catching TypeError/ValueError as 0. Note this is deliberately narrower than `is_truthy` — only `None` and `&quot;&quot;` short circuit to 0, e.g. an explicit 0 is still parsed as 0 via float(), not treated as absent.</p>
+  <div class="marker">(parsers/bt-parse-friends/src/main.rs, line 114–118)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-friends-src-main-rs-11">
+  <h3>Mirrors `_normalize_friend`.</h3>
+  <p>Mirrors `_normalize_friend`.</p>
+  <div class="marker">(parsers/bt-parse-friends/src/main.rs, line 129)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-friends-src-main-rs-12">
+  <h3>Mirrors `FriendsScanner.scan`</h3>
+  <p>Mirrors `FriendsScanner.scan`: returns whatever this single file contributes — friend categories, an account-ranking block, both, or neither, based on what the filename contains.</p>
+  <div class="marker">(parsers/bt-parse-friends/src/main.rs, line 142–144)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-friends-src-main-rs-13">
+  <h3>Extra positional args are an explicit, caller-curated file list (e.g.</h3>
+  <p>Extra positional args are an explicit, caller-curated file list (e.g. blacktape_brain batching a large export smallest-file-first) instead of the usual self-walk of export_dir.</p>
+  <div class="marker">(parsers/bt-parse-friends/src/main.rs, line 196–198)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-friends-src-main-rs-14">
+  <h3>Only one file is expected to carry ranking/statistics per export; if more than one...</h3>
+  <p>Only one file is expected to carry ranking/statistics per export; if more than one matches, the last one wins.</p>
+  <div class="marker">(parsers/bt-parse-friends/src/main.rs, line 216–217)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="parsers-bt-parse-google-src-main-rs" data-page="parsers-bt-parse-google-src-main-rs">
+  <div class="page-kicker">Rust parsers</div>
+  <h2>parsers/bt-parse-google/src/main.rs</h2>
+  <div class="entries">
+    
+<article class="entry" id="parsers-bt-parse-google-src-main-rs-1">
+  <h3>Port of the legacy `google_signal_scanner.py` GoogleSignalScanner.</h3>
+  <p>Port of the legacy `google_signal_scanner.py` GoogleSignalScanner. Extracts non-coordinate Google Timeline Edits signals (detected activity, wifi scans) for the Timeline/Analytics views.</p>
+<p>Ported close to verbatim from `parsers/legacy_reference/google_signal_scanner.py` — see that file for the reference implementation being mirrored here.</p>
+<p>Two deliberate robustness deviations from strict verbatim porting (the legacy code has no exception handling at all in `scan`, so a single malformed record — e.g. a non-numeric `probability`, or a `rawSignal` that isn&#x27;t actually an object — would raise and abort the whole scan): here such records are treated as absent/zero instead of propagating a panic, so one bad file doesn&#x27;t take down a multi thousand-file run. See `to_f64_lenient` and the `.and_then(Value::as_object)` fallbacks below.</p>
+  <div class="marker">(parsers/bt-parse-google/src/main.rs, line 1–16)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-google-src-main-rs-2">
+  <h3>Deliberately a generic JSON object rather than a fixed struct</h3>
+  <p>Deliberately a generic JSON object rather than a fixed struct: &quot;activity&quot; and &quot;wifi_scan&quot; events carry entirely different detail fields (see scan_file below), so one rigid struct would force a single shape onto both or silently drop fields — the same trap the bt-parse-friends stub&#x27;s fixed `Categories` struct had.</p>
+  <div class="marker">(parsers/bt-parse-google/src/main.rs, line 34–38)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-google-src-main-rs-3">
+  <h3>Mirrors Python truthiness for JSON values, since the legacy scanner leans on `a or b`...</h3>
+  <p>Mirrors Python truthiness for JSON values, since the legacy scanner leans on `a or b` key-fallback chains.</p>
+  <div class="marker">(parsers/bt-parse-google/src/main.rs, line 42–43)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-google-src-main-rs-4">
+  <h3>Python&#x27;s `str(value)` for the JSON types this scanner encounters.</h3>
+  <p>Python&#x27;s `str(value)` for the JSON types this scanner encounters.</p>
+  <div class="marker">(parsers/bt-parse-google/src/main.rs, line 55)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-google-src-main-rs-5">
+  <h3>Mirrors `str(obj.get(key) or &quot;&quot;).strip()`.</h3>
+  <p>Mirrors `str(obj.get(key) or &quot;&quot;).strip()`.</p>
+  <div class="marker">(parsers/bt-parse-google/src/main.rs, line 64)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-google-src-main-rs-6">
+  <h3>Mirrors the common `x or &quot;unknown&quot;` fallback used throughout the legacy scanner&#x27;s...</h3>
+  <p>Mirrors the common `x or &quot;unknown&quot;` fallback used throughout the legacy scanner&#x27;s `details` blocks.</p>
+  <div class="marker">(parsers/bt-parse-google/src/main.rs, line 72–73)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-google-src-main-rs-7">
+  <h3>Mirrors `float(value or 0)` used for `probability`, but never panics</h3>
+  <p>Mirrors `float(value or 0)` used for `probability`, but never panics: an unparseable/missing value becomes `0.0` instead of raising, per the robustness note at the top of this file.</p>
+  <div class="marker">(parsers/bt-parse-google/src/main.rs, line 82–84)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-google-src-main-rs-8">
+  <h3>Mirrors `obj.get(key) or {}` for a nested-object field</h3>
+  <p>Mirrors `obj.get(key) or {}` for a nested-object field: falls back to an empty map if the key is missing, null, empty, or (defensively, per the robustness note above) not actually an object.</p>
+  <div class="marker">(parsers/bt-parse-google/src/main.rs, line 94–96)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-google-src-main-rs-9">
+  <h3>Mirrors `FriendsScanner.scan`-style file-level entry point, here for...</h3>
+  <p>Mirrors `FriendsScanner.scan`-style file-level entry point, here for `GoogleSignalScanner.scan`: returns whatever events this single file contributes, or an empty list if the filename/data doesn&#x27;t match.</p>
+  <div class="marker">(parsers/bt-parse-google/src/main.rs, line 104–106)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-google-src-main-rs-10">
+  <h3>Section divider: activity event</h3>
+  <p>A plain visual divider marking the start of the code handling "activity" events, one of the two signal types this file extracts from Google Timeline Edits (the other being wifi scans, marked further down).</p>
+  <div class="marker">(parsers/bt-parse-google/src/main.rs, line 138)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-google-src-main-rs-11">
+  <h3>Picking the best-probability activity, tie-break included</h3>
+  <p>Mirrors `max(activities, key=lambda item: float(item.get(&quot;probability&quot;) or 0))`. Uses fold with `&gt;=` (not `.max_by`) so the *first* item wins on a probability tie, matching Python&#x27;s max() semantics — Rust&#x27;s Iterator::max_by keeps the *last* on ties.</p>
+  <div class="marker">(parsers/bt-parse-google/src/main.rs, line 148–151)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-google-src-main-rs-12">
+  <h3>NOTE: the legacy code is genuinely inconsistent between the summary line and the...</h3>
+  <p>NOTE: the legacy code is genuinely inconsistent between the summary line and the details field for activityType: summary: `.get(&#x27;activityType&#x27;, &#x27;UNKNOWN&#x27;)` — dict-get default, only kicks in if the key is fully *absent*. details: `.get(&quot;activityType&quot;) or &quot;UNKNOWN&quot;` — falls back on *any* falsy value too, e.g. a present-but-empty string. Ported verbatim (not &quot;fixed&quot;) per the porting process — see CLAUDE.md.</p>
+  <div class="marker">(parsers/bt-parse-google/src/main.rs, line 165–172)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-google-src-main-rs-13">
+  <h3>NOTE: fallback here is &quot;UNKNOWN&quot; (uppercase), unlike the lowercase &quot;unknown&quot; used for...</h3>
+  <p>NOTE: fallback here is &quot;UNKNOWN&quot; (uppercase), unlike the lowercase &quot;unknown&quot; used for device_id/platform/ additional_timestamp below — matches the legacy scanner&#x27;s `str(... or &quot;UNKNOWN&quot;)` exactly, so this can&#x27;t reuse `or_unknown`.</p>
+  <div class="marker">(parsers/bt-parse-google/src/main.rs, line 177–181)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-google-src-main-rs-14">
+  <h3>Section divider: wifi_scan event</h3>
+  <p>The matching divider for the wifi-scan half of the file, separating it from the activity-event handling above.</p>
+  <div class="marker">(parsers/bt-parse-google/src/main.rs, line 213)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-google-src-main-rs-15">
+  <h3>Mirrors `max((d.get(&quot;rawRssi&quot;) for d in devices if d.get(&quot;rawRssi&quot;) is not None),...</h3>
+  <p>Mirrors `max((d.get(&quot;rawRssi&quot;) for d in devices if d.get(&quot;rawRssi&quot;) is not None), default=None)`. Plain numeric max, so tie-break order doesn&#x27;t matter here (unlike best_activity above).</p>
+  <div class="marker">(parsers/bt-parse-google/src/main.rs, line 223–225)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-google-src-main-rs-16">
+  <h3>Mirrors `[event for event in events if event.get(&quot;timestamp&quot;)]`.</h3>
+  <p>Mirrors `[event for event in events if event.get(&quot;timestamp&quot;)]`.</p>
+  <div class="marker">(parsers/bt-parse-google/src/main.rs, line 264)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-google-src-main-rs-17">
+  <h3>Extra positional args are an explicit, caller-curated file list (e.g.</h3>
+  <p>Extra positional args are an explicit, caller-curated file list (e.g. blacktape_brain batching a large export smallest-file-first) instead of the usual self-walk of export_dir.</p>
+  <div class="marker">(parsers/bt-parse-google/src/main.rs, line 278–280)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-google-src-main-rs-18">
+  <h3>Regression test for the legacy `.get(k, default)` vs `.get(k) or default` inconsistency</h3>
+  <p>Regression test for the legacy `.get(k, default)` vs `.get(k) or default` inconsistency: an explicit empty-string activityType is kept as-is in the summary (dict-get default only applies when the key is absent) but replaced with &quot;UNKNOWN&quot; in details (`or` treats empty string as falsy).</p>
+  <div class="marker">(parsers/bt-parse-google/src/main.rs, line 398–402)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="parsers-bt-parse-chat-src-main-rs" data-page="parsers-bt-parse-chat-src-main-rs">
+  <div class="page-kicker">Rust parsers</div>
+  <h2>parsers/bt-parse-chat/src/main.rs</h2>
+  <div class="entries">
+    
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-1">
+  <h3>Port of the legacy `chat_scanner.py` ChatScanner.</h3>
+  <p>Port of the legacy `chat_scanner.py` ChatScanner. Recursively tunnels through nested JSON to find message-shaped dictionaries, regardless of depth or the specific export format&#x27;s schema.</p>
+<p>Ported close to verbatim from `parsers/legacy_reference/chat_scanner.py` — see that file for the reference implementation being mirrored here.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 1–6)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-2">
+  <h3>Mirrors `ChatScanner.content_indicators`.</h3>
+  <p>Mirrors `ChatScanner.content_indicators`. A dict is treated as a message if it has any of these keys.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 16–17)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-3">
+  <h3>NOTE: the legacy `__init__` also defines `sender_indicators = {&#x27;sender&#x27;, &#x27;From&#x27;,...</h3>
+  <p>NOTE: the legacy `__init__` also defines `sender_indicators = {&#x27;sender&#x27;, &#x27;From&#x27;, &#x27;author&#x27;, &#x27;sender_name&#x27;, &#x27;FromMe&#x27;}`, but `_process_item` never actually consulted it — only `From`/`sender` were checked, so any export using `sender_name`/`senderName` (e.g. a real Facebook Messenger export sampled from `~/Downloads`) fell through to &quot;Unknown&quot; for every message. Ported that intent for real this time via `SENDER_NAME_KEYS` below, rather than reproducing the same dead attribute.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 20–26)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-4">
+  <h3>Priority order for locating a timestamp on a message dict.</h3>
+  <p>Priority order for locating a timestamp on a message dict. Mirrors `next((item.get(k) for k in [...] if k in item), &quot;1970-01-01 00:00:00&quot;)` — note this default has no &quot; UTC&quot; suffix, unlike bt-parse-gps&#x27;s timestamp fallback; that&#x27;s the legacy chat scanner&#x27;s own convention, ported as-is rather than unified with gps&#x27;s.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 29–33)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-5">
+  <h3>Priority order for detecting whether a message was sent by the account owner.</h3>
+  <p>Priority order for detecting whether a message was sent by the account owner. Mirrors the `for flag in [...]` loop in `_process_item`.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 36–37)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-6">
+  <h3>The export-relative filename this record was extracted from (see `relative_filename`...</h3>
+  <p>The export-relative filename this record was extracted from (see `relative_filename` in `parsers/common`) — threaded through so the brain-side ingest can attribute each record to a `files` row for provenance, the same way gps/google/friends records already do via their own `source` fields.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 45–49)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-7">
+  <h3>Kept as a raw JSON value rather than a String</h3>
+  <p>Kept as a raw JSON value rather than a String: the legacy scanner takes whatever value was stored under the winning timestamp key as-is (could be a string, an epoch integer, etc.) without stringifying it, only falling back to a literal string default when no timestamp-like key is present at all.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 51–55)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-8">
+  <h3>Mirrors `&quot;metadata&quot;: item` — the full original message dict, preserved verbatim for UI...</h3>
+  <p>Mirrors `&quot;metadata&quot;: item` — the full original message dict, preserved verbatim for UI inspection.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 58–59)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-9">
+  <h3>Mirrors Python truthiness for JSON values, since the legacy scanner leans on `a or b`...</h3>
+  <p>Mirrors Python truthiness for JSON values, since the legacy scanner leans on `a or b` key-fallback chains and `bool(value)` conversions.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 63–64)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-10">
+  <h3>Python&#x27;s `str(value)` for the JSON types this scanner encounters.</h3>
+  <p>Python&#x27;s `str(value)` for the JSON types this scanner encounters.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 76)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-11">
+  <h3>Mirrors `ChatScanner._process_item`.</h3>
+  <p>Mirrors `ChatScanner._process_item`.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 85)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-12">
+  <h3>`bool(item[flag])` — Python truthiness of *whatever* the flag&#x27;s value is (e.g.</h3>
+  <p>`bool(item[flag])` — Python truthiness of *whatever* the flag&#x27;s value is (e.g. `bool(&quot;false&quot;)` is `True`, a classic gotcha), mirrored via `is_truthy` rather than treating it as an actual bool.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 93–95)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-13">
+  <h3>Mirrors `str(item.get(&quot;From&quot;) or item.get(&quot;sender&quot;) or &quot;Unknown&quot;)`, extended to also...</h3>
+  <p>Mirrors `str(item.get(&quot;From&quot;) or item.get(&quot;sender&quot;) or &quot;Unknown&quot;)`, extended to also check `senderName`/`sender_name`/`author` (see `SENDER_NAME_KEYS`) so exports that use those keys instead don&#x27;t all collapse to &quot;Unknown&quot;.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 104–107)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-14">
+  <h3>Mirrors `str(item.get(&quot;Content&quot;) or item.get(&quot;text&quot;) or f&quot;[{item.get(&#x27;Media Type&#x27;,...</h3>
+  <p>Mirrors `str(item.get(&quot;Content&quot;) or item.get(&quot;text&quot;) or f&quot;[{item.get(&#x27;Media Type&#x27;, &#x27;DATA_SIGNAL&#x27;)}]&quot;)`. NOTE: the inner `Media Type` lookup is a dict-get default (only triggers if the key is fully *absent*), unlike the `or` chain around it — the same legacy quirk seen in `google_signal_scanner.py`&#x27;s activityType handling. Ported verbatim, not unified.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 114–119)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-15">
+  <h3>Mirrors `ChatScanner._recursive_search`.</h3>
+  <p>Mirrors `ChatScanner._recursive_search`. Walks the entire JSON tree; once a dict matches `CONTENT_INDICATORS` it&#x27;s recorded as a message and its children are *not* descended into further (no `else` branch taken for a matched dict) — unlike bt-parse-gps&#x27;s `hunt()`, which keeps recursing everywhere regardless of matches.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 144–148)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-16">
+  <h3>Mirrors `key if isinstance(value, (list, dict)) else current_context` — the traversed...</h3>
+  <p>Mirrors `key if isinstance(value, (list, dict)) else current_context` — the traversed key becomes the new conversation-id context only when its value is itself a container worth remembering.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 156–159)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-17">
+  <h3>Detects the &quot;one export file is one whole conversation&quot; shape (e.g.</h3>
+  <p>Detects the &quot;one export file is one whole conversation&quot; shape (e.g. a real Facebook Messenger export: `{&quot;participants&quot;: [...], &quot;threadName&quot;: &quot;...&quot;, &quot;messages&quot;: [{&quot;senderName&quot;: ..., &quot;text&quot;: ..., &quot;timestamp&quot;: ...}, ...]}`). When a file has a top-level `messages` array, every message in it belongs to the same conversation — but `recursive_search`&#x27;s key-name-based context tracking assigns the *literal key* `&quot;messages&quot;` as the conversation id for all of them, since that&#x27;s the key whose value it just descended into. Every file sharing that same generic wrapper key name then collapses into one indistinguishable &quot;messages&quot; bucket instead of grouping per file/conversation. This fast path bypasses that by reading `messages` directly and naming the conversation from the file&#x27;s own `threadName`/title (or the filename itself, when neither is present) instead.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 177–189)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-18">
+  <h3>Prefers a human-readable name already in the file (`threadName` from a real Facebook...</h3>
+  <p>Prefers a human-readable name already in the file (`threadName` from a real Facebook export, or `title`/`name`/`chatName` for other schemas using this same shape) before falling back to the file&#x27;s own name — &quot;pull the name from the filename&quot; when nothing better is available.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 194–197)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-19">
+  <h3>The file&#x27;s own base name with its directory and `.json` extension stripped, e.g.</h3>
+  <p>The file&#x27;s own base name with its directory and `.json` extension stripped, e.g. `&quot;messages2/Eric Scheidker_19.json&quot;` -&gt; `&quot;Eric Scheidker_19&quot;`.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 209–211)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-20">
+  <h3>Mirrors `ChatScanner.scan`.</h3>
+  <p>Mirrors `ChatScanner.scan`.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 220)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-21">
+  <h3>`bt-parse-chat` is intentionally source-agnostic (see the module doc comment) so it...</h3>
+  <p>`bt-parse-chat` is intentionally source-agnostic (see the module doc comment) so it still catches chat data in export formats nobody&#x27;s taught `classify.py` about yet — but `blacktape_brain`&#x27;s planner (`PROVIDER_REQUIRED_SOURCE` in cli.py) hands *every* file in a batch to this binary regardless of what kind of Snapchat/ Google data it actually holds, not just chat exports. Its own `CONTENT_INDICATORS` heuristic (`&quot;data&quot;`, `&quot;message&quot;`, `&quot;body&quot;`, etc.) is broad enough to false-positive on nested dicts inside Snapchat&#x27;s friends/ranking files (both already handled by their own dedicated parser), which is what let non-chat data leak into the CHAT page. Skip filenames already known to belong to those categories, mirroring the existing location/gps/points skip below.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 223–234)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-22">
+  <h3>Extra positional args are an explicit, caller-curated file list (e.g.</h3>
+  <p>Extra positional args are an explicit, caller-curated file list (e.g. blacktape_brain batching a large export smallest-file-first) instead of the usual self-walk of export_dir.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 265–267)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-23">
+  <h3>Real Facebook Messenger export shape</h3>
+  <p>Real Facebook Messenger export shape: each file is one whole conversation. Previously every such file collapsed to conversation == &quot;messages&quot; (the wrapper key name), so two different friends&#x27; conversations were indistinguishable.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 298–301)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-24">
+  <h3>Real Snapchat friends.json/ranking.json entries can carry a generic &quot;data&quot; or...</h3>
+  <p>Real Snapchat friends.json/ranking.json entries can carry a generic &quot;data&quot; or &quot;message&quot;-shaped nested dict that would otherwise false-positive as a chat message — both are already covered by bt-parse-friends, so bt-parse-chat should never surface anything from them.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 354–358)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-25">
+  <h3>A message dict whose own value happens to contain something that would also look like...</h3>
+  <p>A message dict whose own value happens to contain something that would also look like a message must not be double-counted — matching stops recursion into that node&#x27;s children.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 411–413)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-26">
+  <h3>bool(&quot;false&quot;) is True in Python — mirrored via is_truthy.</h3>
+  <p>bool(&quot;false&quot;) is True in Python — mirrored via is_truthy.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 425)</div>
+</article>
+<article class="entry" id="parsers-bt-parse-chat-src-main-rs-27">
+  <h3>`.get(&#x27;Media Type&#x27;, &#x27;DATA_SIGNAL&#x27;)` only falls back when the key is *absent*; a...</h3>
+  <p>`.get(&#x27;Media Type&#x27;, &#x27;DATA_SIGNAL&#x27;)` only falls back when the key is *absent*; a present-but-empty value is kept as-is, unlike the `or` chains used elsewhere in this same function.</p>
+  <div class="marker">(parsers/bt-parse-chat/src/main.rs, line 454–456)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="brain-src-blacktape-brain-align-py" data-page="brain-src-blacktape-brain-align-py">
+  <div class="page-kicker">Python brain</div>
+  <h2>brain/src/blacktape_brain/align.py</h2>
+  <div class="entries">
+    
+<article class="entry" id="brain-src-blacktape-brain-align-py-1">
+  <h3>Epoch-seconds timestamps for realistic dates are ~10 digits (year 2026 is ~1.77e9);...</h3>
+  <p>Epoch-seconds timestamps for realistic dates are ~10 digits (year 2026 is ~1.77e9); epoch-*milliseconds* timestamps (e.g. a real Facebook Messenger export&#x27;s &quot;timestamp&quot; field) are ~13 digits (~1.77e12) for the same date. Without distinguishing the two, a millisecond value passed straight to fromtimestamp() as if it were seconds lands thousands of years in the future, overflows datetime&#x27;s range, and falls back to printing the raw epoch-ms integer as a string instead of a readable date. 1e11 sits well above any real seconds-epoch value and well below any real ms-epoch one.</p>
+  <div class="marker">(brain/src/blacktape_brain/align.py, line 25–32)</div>
+</article>
+<article class="entry" id="brain-src-blacktape-brain-align-py-2">
+  <h3>A &quot;timestamp&quot;-shaped field that isn&#x27;t actually one — e.g.</h3>
+  <p>A &quot;timestamp&quot;-shaped field that isn&#x27;t actually one — e.g. bt-parse-chat&#x27;s generic message-shaped-dict heuristic picking up an unrelated large number from a non-export directory — would otherwise crash fromtimestamp() and take the whole ingest run down over one bad record.</p>
+  <div class="marker">(brain/src/blacktape_brain/align.py, line 78–82)</div>
+</article>
+<article class="entry" id="brain-src-blacktape-brain-align-py-3">
+  <h3>Fallback</h3>
+  <p>Fallback: stringify whatever&#x27;s left (unrecognized string format, or a type we don&#x27;t otherwise handle).</p>
+  <div class="marker">(brain/src/blacktape_brain/align.py, line 102–103)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="brain-src-blacktape-brain-classify-py" data-page="brain-src-blacktape-brain-classify-py">
+  <div class="page-kicker">Python brain</div>
+  <h2>brain/src/blacktape_brain/classify.py</h2>
+  <div class="entries">
+    
+<article class="entry" id="brain-src-blacktape-brain-classify-py-1">
+  <h3>NOTE: these are the section names from Snapchat&#x27;s `location_history.json`.</h3>
+  <p>NOTE: these are the section names from Snapchat&#x27;s `location_history.json`. Several of these were misfiled under GOOGLE_CONTENT_MARKERS in the legacy Python scanner, which misdetected real Snapchat exports as Google.</p>
+  <div class="marker">(brain/src/blacktape_brain/classify.py, line 28–30)</div>
+</article>
+<article class="entry" id="brain-src-blacktape-brain-classify-py-2">
+  <h3>Google&#x27;s actual Takeout location export uses different key names (e.g.</h3>
+  <p>Google&#x27;s actual Takeout location export uses different key names (e.g. &quot;locations&quot;, &quot;timelineObjects&quot;, &quot;timelineEdits&quot;) — &quot;Home &amp; Work&quot;, &quot;Timeline Edits&quot; haven&#x27;t been checked against a real Takeout sample yet.</p>
+  <div class="marker">(brain/src/blacktape_brain/classify.py, line 41–43)</div>
+</article>
+<article class="entry" id="brain-src-blacktape-brain-classify-py-3">
+  <h3>Deliberately no filename rule for &quot;location_history&quot; here — Snapchat&#x27;s own location...</h3>
+  <p>Deliberately no filename rule for &quot;location_history&quot; here — Snapchat&#x27;s own location export is also named `location_history.json`, so that filename can&#x27;t decide the source system on its own; it falls through to the content-marker check below instead.</p>
+  <div class="marker">(brain/src/blacktape_brain/classify.py, line 58–61)</div>
+</article>
+<article class="entry" id="brain-src-blacktape-brain-classify-py-4">
+  <h3>Snapchat&#x27;s key set is more distinctive/specific, so check it first.</h3>
+  <p>Snapchat&#x27;s key set is more distinctive/specific, so check it first.</p>
+  <div class="marker">(brain/src/blacktape_brain/classify.py, line 78)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="brain-src-blacktape-brain-planner-py" data-page="brain-src-blacktape-brain-planner-py">
+  <div class="page-kicker">Python brain</div>
+  <h2>brain/src/blacktape_brain/planner.py</h2>
+  <div class="entries">
+    
+<article class="entry" id="brain-src-blacktape-brain-planner-py-1">
+  <h3>Mirrors parsers/common/src/lib.rs::MAX_WALK_DEPTH.</h3>
+  <p>Mirrors parsers/common/src/lib.rs::MAX_WALK_DEPTH. Kept in sync by hand; if that constant changes, update this too.</p>
+  <div class="marker">(brain/src/blacktape_brain/planner.py, line 43–44)</div>
+</article>
+<article class="entry" id="brain-src-blacktape-brain-planner-py-2">
+  <h3>Cumulative size, in bytes, a single batch is allowed to reach before a new batch starts.</h3>
+  <p>Cumulative size, in bytes, a single batch is allowed to reach before a new batch starts.</p>
+  <div class="marker">(brain/src/blacktape_brain/planner.py, line 47–48)</div>
+</article>
+<article class="entry" id="brain-src-blacktape-brain-planner-py-3">
+  <h3>Anything nested further would only hold files deeper than MAX_WALK_DEPTH allows — no...</h3>
+  <p>Anything nested further would only hold files deeper than MAX_WALK_DEPTH allows — no point descending.</p>
+  <div class="marker">(brain/src/blacktape_brain/planner.py, line 98–99)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="brain-src-blacktape-brain-store-py" data-page="brain-src-blacktape-brain-store-py">
+  <div class="page-kicker">Python brain</div>
+  <h2>brain/src/blacktape_brain/store.py</h2>
+  <div class="entries">
+    
+<article class="entry" id="brain-src-blacktape-brain-store-py-1">
+  <h3>`None` (no explicit sender flag in the source data — e.g.</h3>
+  <p>`None` (no explicit sender flag in the source data — e.g. a real Facebook Messenger export has no is-this-from-me field at all) is kept distinct from an explicit `False`, rather than collapsing both to 0, so `infer_and_backfill_direction` below knows which rows still need inferring and doesn&#x27;t overwrite an explicit flag a parser already gave us.</p>
+  <div class="marker">(brain/src/blacktape_brain/store.py, line 210–215)</div>
+</article>
+<article class="entry" id="brain-src-blacktape-brain-store-py-2">
+  <h3>NOTE: FriendRecord&#x27;s own &quot;source&quot; field is content-derived (mirrors the record&#x27;s...</h3>
+  <p>NOTE: FriendRecord&#x27;s own &quot;source&quot; field is content-derived (mirrors the record&#x27;s &quot;Source&quot; key, e.g. how the friend was added) — unlike gps/google, it is *not* the originating filename. `file` is the filename field bt-parse-friends threads through for that, added alongside `source` rather than reusing it (see bt-parse-friends/src/main.rs).</p>
+  <div class="marker">(brain/src/blacktape_brain/store.py, line 335–340)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="brain-src-blacktape-brain-signals-py" data-page="brain-src-blacktape-brain-signals-py">
+  <div class="page-kicker">Python brain</div>
+  <h2>brain/src/blacktape_brain/signals.py</h2>
+  <div class="entries">
+    
+<article class="entry" id="brain-src-blacktape-brain-signals-py-1">
+  <h3>How close (in seconds) the nearest GPS point has to be before a signal is considered...</h3>
+  <p>How close (in seconds) the nearest GPS point has to be before a signal is considered &quot;at&quot; that location at all. A signal an hour away from the nearest recorded fix isn&#x27;t telling you where it happened — better to say so than to silently attach a misleading location.</p>
+  <div class="marker">(brain/src/blacktape_brain/signals.py, line 21–24)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="brain-src-blacktape-brain-explore-py" data-page="brain-src-blacktape-brain-explore-py">
+  <div class="page-kicker">Python brain</div>
+  <h2>brain/src/blacktape_brain/explore.py</h2>
+  <div class="entries">
+    
+<article class="entry" id="brain-src-blacktape-brain-explore-py-1">
+  <h3>Wifi/activity signals have no location of their own — attach whichever GPS point is...</h3>
+  <p>Wifi/activity signals have no location of their own — attach whichever GPS point is closest to them in time (within signals.DEFAULT_MAX_GAP_SECONDS) so they can be shown in the context of where they most likely happened.</p>
+  <div class="marker">(brain/src/blacktape_brain/explore.py, line 37–40)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="brain-src-blacktape-brain-cli-py" data-page="brain-src-blacktape-brain-cli-py">
+  <div class="page-kicker">Python brain</div>
+  <h2>brain/src/blacktape_brain/cli.py</h2>
+  <div class="entries">
+    
+<article class="entry" id="brain-src-blacktape-brain-cli-py-1">
+  <h3>bt-parse-friends/-google can&#x27;t generalize the way bt-parse-gps/-chat can (there&#x27;s no...</h3>
+  <p>bt-parse-friends/-google can&#x27;t generalize the way bt-parse-gps/-chat can (there&#x27;s no structural heuristic for &quot;this is a friends list&quot; the way there is for &quot;this dict has lat/lon&quot; or &quot;this dict is message-shaped) — so a batch is filtered down to only Snapchat/Google-classified files before being handed to these two specifically. gps/chat (absent from this dict) get every file in the batch, known or not.</p>
+  <div class="marker">(brain/src/blacktape_brain/cli.py, line 23–28)</div>
+</article>
+<article class="entry" id="brain-src-blacktape-brain-cli-py-2">
+  <h3>brain/src/blacktape_brain/cli.py -&gt; up to the project-blacktape project root</h3>
+  <p>brain/src/blacktape_brain/cli.py -&gt; up to the project-blacktape project root</p>
+  <div class="marker">(brain/src/blacktape_brain/cli.py, line 34)</div>
+</article>
+<article class="entry" id="brain-src-blacktape-brain-cli-py-3">
+  <h3>$CARGO_TARGET_DIR (if set) is checked first</h3>
+  <p>$CARGO_TARGET_DIR (if set) is checked first: on machines that redirect all Cargo output to a shared cache dir, that&#x27;s where the bt-parse-* binaries actually land, not parsers/target — see the matching check in gui/src/parsers.rs::find_binary.</p>
+  <div class="marker">(brain/src/blacktape_brain/cli.py, line 61–64)</div>
+</article>
+<article class="entry" id="brain-src-blacktape-brain-cli-py-4">
+  <h3>This batch has files, just none applicable to this particular binary (e.g.</h3>
+  <p>This batch has files, just none applicable to this particular binary (e.g. a friends-only binary given a batch of chat files) — skip the subprocess call rather than passing an empty file list, which would trigger the binary&#x27;s whole-export-dir self-walk fallback and reprocess everything.</p>
+  <div class="marker">(brain/src/blacktape_brain/cli.py, line 189–194)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="brain-tests-test-align-py" data-page="brain-tests-test-align-py">
+  <div class="page-kicker">Python brain tests</div>
+  <h2>brain/tests/test_align.py</h2>
+  <div class="entries">
+    
+<article class="entry" id="brain-tests-test-align-py-1">
+  <h3>2024-05-01 18:05:00 UTC</h3>
+  <p>2024-05-01 18:05:00 UTC</p>
+  <div class="marker">(brain/tests/test_align.py, line 23)</div>
+</article>
+<article class="entry" id="brain-tests-test-align-py-2">
+  <h3>A real Facebook Messenger export&#x27;s message &quot;timestamp&quot; field is epoch *milliseconds*...</h3>
+  <p>A real Facebook Messenger export&#x27;s message &quot;timestamp&quot; field is epoch *milliseconds* (13 digits), not seconds. Passed straight to fromtimestamp() as seconds, this overflows datetime&#x27;s year range and used to fall back to printing the raw millisecond integer instead of a readable date.</p>
+  <div class="marker">(brain/tests/test_align.py, line 33–37)</div>
+</article>
+<article class="entry" id="brain-tests-test-align-py-3">
+  <h3>A value that&#x27;s neither falsy, a datetime, a numeric epoch, nor a recognized string...</h3>
+  <p>A value that&#x27;s neither falsy, a datetime, a numeric epoch, nor a recognized string format stringifies as a last resort.</p>
+  <div class="marker">(brain/tests/test_align.py, line 44–45)</div>
+</article>
+<article class="entry" id="brain-tests-test-align-py-4">
+  <h3>Regression test</h3>
+  <p>Regression test: pointing the GUI at a non-export directory (~/Downloads) let bt-parse-chat&#x27;s generic message-shaped-dict heuristic pick up an unrelated large number as a &quot;timestamp&quot; field. datetime.fromtimestamp() raised (year out of range) and crashed the whole ingest-stream run over one bad record. Both the raw int/float path and the numeric-string path must degrade to str(value) instead of propagating. Large enough that even after the epoch-milliseconds conversion (see test_parse_timestamp_converts_epoch_milliseconds_to_chronological_string) divides it by 1000, it&#x27;s still outside datetime&#x27;s year 1..9999 range.</p>
+  <div class="marker">(brain/tests/test_align.py, line 51–60)</div>
+</article>
+<article class="entry" id="brain-tests-test-align-py-5">
+  <h3>2024-05-01 18:00:00 UTC -&gt; 14:00:00 in US/Eastern (UTC-4, EDT in May)</h3>
+  <p>2024-05-01 18:00:00 UTC -&gt; 14:00:00 in US/Eastern (UTC-4, EDT in May)</p>
+  <div class="marker">(brain/tests/test_align.py, line 68)</div>
+</article>
+<article class="entry" id="brain-tests-test-align-py-6">
+  <h3>US/Eastern is UTC-5 in January (EST) and UTC-4 in July (EDT) — a fixed offset would...</h3>
+  <p>US/Eastern is UTC-5 in January (EST) and UTC-4 in July (EDT) — a fixed offset would misconvert one of these two.</p>
+  <div class="marker">(brain/tests/test_align.py, line 73–74)</div>
+</article>
+<article class="entry" id="brain-tests-test-align-py-7">
+  <h3>A falsy input still normalizes to the DEFAULT_TIMESTAMP epoch string...</h3>
+  <p>A falsy input still normalizes to the DEFAULT_TIMESTAMP epoch string (parse_timestamp&#x27;s own fallback), which is itself a real, parseable instant — so it gets converted like anything else, not left alone.</p>
+  <div class="marker">(brain/tests/test_align.py, line 92–94)</div>
+</article>
+<article class="entry" id="brain-tests-test-align-py-8">
+  <h3>Whole-dataset `align()`/`_align_chats()` (conversation grouping, friends ranking &quot;last...</h3>
+  <p>Whole-dataset `align()`/`_align_chats()` (conversation grouping, friends ranking &quot;last batch wins&quot;, identity passthrough) is gone — those concerns are now SQL (GROUP BY/ORDER BY in store.py&#x27;s schema and timeline.py/search.py&#x27;s queries, &quot;last batch wins&quot; via store.latest_ranking&#x27;s `ORDER BY ingested_at DESC`). See test_store.py and test_timeline.py for the replacement coverage.</p>
+  <div class="marker">(brain/tests/test_align.py, line 98–103)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="brain-tests-test-cli-py" data-page="brain-tests-test-cli-py">
+  <div class="page-kicker">Python brain tests</div>
+  <h2>brain/tests/test_cli.py</h2>
+  <div class="entries">
+    
+<article class="entry" id="brain-tests-test-cli-py-1">
+  <h3>Regression</h3>
+  <p>Regression: a batch containing only an unrecognized file (no Snapchat/Google-classified file at all) must not call bt-parse-friends/bt-parse-google with an empty file list — that would trigger their self-walk fallback and reprocess the whole export directory instead of doing nothing. gps/chat still run over it (they&#x27;re source-agnostic), so it&#x27;s not simply excluded outright.</p>
+  <div class="marker">(brain/tests/test_cli.py, line 85–90)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="brain-tests-test-explore-py" data-page="brain-tests-test-explore-py">
+  <div class="page-kicker">Python brain tests</div>
+  <h2>brain/tests/test_explore.py</h2>
+  <div class="entries">
+    
+<article class="entry" id="brain-tests-test-explore-py-1">
+  <h3>No identity table exists — the legacy GenericScanner that would have populated one was...</h3>
+  <p>No identity table exists — the legacy GenericScanner that would have populated one was never ported to a bt-parse-* binary (see align.py&#x27;s former docstring).</p>
+  <div class="marker">(brain/tests/test_explore.py, line 32–34)</div>
+</article>
+<article class="entry" id="brain-tests-test-explore-py-2">
+  <h3>tz=&quot;UTC&quot; keeps this deterministic across machines — insert_google_records now runs...</h3>
+  <p>tz=&quot;UTC&quot; keeps this deterministic across machines — insert_google_records now runs signal timestamps through the same to_local_time conversion insert_gps_records already applies, so the two tables share one time basis for signals.nearest_gps_point&#x27;s proximity matching.</p>
+  <div class="marker">(brain/tests/test_explore.py, line 42–45)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="brain-tests-test-mapview-py" data-page="brain-tests-test-mapview-py">
+  <div class="page-kicker">Python brain tests</div>
+  <h2>brain/tests/test_mapview.py</h2>
+  <div class="entries">
+    
+<article class="entry" id="brain-tests-test-mapview-py-1">
+  <h3>2024-06-01 02:00:00 UTC lands on 2024-05-31 in US/Eastern (see...</h3>
+  <p>2024-06-01 02:00:00 UTC lands on 2024-05-31 in US/Eastern (see test_to_local_time_can_cross_the_day_boundary) — the point&#x27;s day bucket must follow the timezone conversion baked in at ingest time by `store.insert_gps_records`, not the UTC calendar day.</p>
+  <div class="marker">(brain/tests/test_mapview.py, line 114–117)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="brain-tests-test-planner-py" data-page="brain-tests-test-planner-py">
+  <div class="page-kicker">Python brain tests</div>
+  <h2>brain/tests/test_planner.py</h2>
+  <div class="entries">
+    
+<article class="entry" id="brain-tests-test-planner-py-1">
+  <h3>depth 1 (direct child)</h3>
+  <p>depth 1 (direct child)</p>
+  <div class="marker">(brain/tests/test_planner.py, line 36)</div>
+</article>
+<article class="entry" id="brain-tests-test-planner-py-2">
+  <h3>depth MAX_WALK_DEPTH (2)</h3>
+  <p>depth MAX_WALK_DEPTH (2): still found</p>
+  <div class="marker">(brain/tests/test_planner.py, line 38)</div>
+</article>
+<article class="entry" id="brain-tests-test-planner-py-3">
+  <h3>depth MAX_WALK_DEPTH + 1 (3)</h3>
+  <p>depth MAX_WALK_DEPTH + 1 (3): too deep, must be skipped</p>
+  <div class="marker">(brain/tests/test_planner.py, line 40)</div>
+</article>
+<article class="entry" id="brain-tests-test-planner-py-4">
+  <h3>discover_json_files is purely a directory walk — it makes no judgment about whether a...</h3>
+  <p>discover_json_files is purely a directory walk — it makes no judgment about whether a file is recognizable export data. A file with a filename and content that classify.classify_file would reject still shows up here; classify_discovered_files is where that classification actually happens (though it no longer drops anything).</p>
+  <div class="marker">(brain/tests/test_planner.py, line 49–53)</div>
+</article>
+<article class="entry" id="brain-tests-test-planner-py-5">
+  <h3>Real Snapchat &quot;location_history.json&quot; key set — filename alone is ambiguous (Google...</h3>
+  <p>Real Snapchat &quot;location_history.json&quot; key set — filename alone is ambiguous (Google uses the same name), so this only classifies via the content-marker fallback.</p>
+  <div class="marker">(brain/tests/test_planner.py, line 92–94)</div>
+</article>
+<article class="entry" id="brain-tests-test-planner-py-6">
+  <h3>Padded with a &quot;notes&quot; field to make this the largest of the three while still...</h3>
+  <p>Padded with a &quot;notes&quot; field to make this the largest of the three while still classifying (filename contains &quot;friends&quot;).</p>
+  <div class="marker">(brain/tests/test_planner.py, line 122–123)</div>
+</article>
+<article class="entry" id="brain-tests-test-planner-py-7">
+  <h3>Small files come first, bucketed together; the oversized file gets its own trailing...</h3>
+  <p>Small files come first, bucketed together; the oversized file gets its own trailing batch rather than being dropped.</p>
+  <div class="marker">(brain/tests/test_planner.py, line 130–131)</div>
+</article>
+<article class="entry" id="brain-tests-test-planner-py-8">
+  <h3>Unlike the old recognized_json_files-based behavior, an unrecognized file is still...</h3>
+  <p>Unlike the old recognized_json_files-based behavior, an unrecognized file is still batched (tagged UNKNOWN) rather than dropped — gps/chat run over it anyway and tag their output &#x27;inferred&#x27;; cli.py is what filters batches down per-binary for friends/google.</p>
+  <div class="marker">(brain/tests/test_planner.py, line 145–148)</div>
+</article>
+<article class="entry" id="brain-tests-test-planner-py-9">
+  <h3>A file well beyond MAX_WALK_DEPTH — fine here, since classify_files never walks and...</h3>
+  <p>A file well beyond MAX_WALK_DEPTH — fine here, since classify_files never walks and has no depth bound.</p>
+  <div class="marker">(brain/tests/test_planner.py, line 166–167)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="brain-tests-test-signals-py" data-page="brain-tests-test-signals-py">
+  <div class="page-kicker">Python brain tests</div>
+  <h2>brain/tests/test_signals.py</h2>
+  <div class="entries">
+    
+<article class="entry" id="brain-tests-test-signals-py-1">
+  <h3>12:16 is 16 minutes after the first point, 4 minutes before the second.</h3>
+  <p>12:16 is 16 minutes after the first point, 4 minutes before the second.</p>
+  <div class="marker">(brain/tests/test_signals.py, line 40)</div>
+</article>
+<article class="entry" id="brain-tests-test-signals-py-2">
+  <h3>An hour away, well past the default 1800s max gap.</h3>
+  <p>An hour away, well past the default 1800s max gap.</p>
+  <div class="marker">(brain/tests/test_signals.py, line 54)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="brain-tests-test-store-py" data-page="brain-tests-test-store-py">
+  <div class="page-kicker">Python brain tests</div>
+  <h2>brain/tests/test_store.py</h2>
+  <div class="entries">
+    
+<article class="entry" id="brain-tests-test-store-py-1">
+  <h3>No conn needed here beyond a throwaway in-memory one; upsert_ranking(None) must be a...</h3>
+  <p>No conn needed here beyond a throwaway in-memory one; upsert_ranking(None) must be a no-op.</p>
+  <div class="marker">(brain/tests/test_store.py, line 177)</div>
+</article>
+<article class="entry" id="brain-tests-test-store-py-2">
+  <h3>Mirrors a real Facebook Messenger export</h3>
+  <p>Mirrors a real Facebook Messenger export: no explicit is_sender_flag anywhere (is_sender_flag omitted -&gt; stored as NULL), but &quot;Johnna Rogers&quot; appears as a sender in both conversations while &quot;Eric&quot; and &quot;Billy&quot; each appear in only one -&gt; Johnna is the account owner.</p>
+  <div class="marker">(brain/tests/test_store.py, line 298–301)</div>
+</article>
+<article class="entry" id="brain-tests-test-store-py-3">
+  <h3>Before backfill, every row&#x27;s is_sender is still NULL (no explicit flag).</h3>
+  <p>Before backfill, every row&#x27;s is_sender is still NULL (no explicit flag).</p>
+  <div class="marker">(brain/tests/test_store.py, line 313)</div>
+</article>
+<article class="entry" id="brain-tests-test-store-py-4">
+  <h3>Only one conversation ingested so far -&gt; no sender appears in more than one distinct...</h3>
+  <p>Only one conversation ingested so far -&gt; no sender appears in more than one distinct conversation yet; leave is_sender NULL rather than guessing.</p>
+  <div class="marker">(brain/tests/test_store.py, line 344–346)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="brain-tests-test-timeline-py" data-page="brain-tests-test-timeline-py">
+  <div class="page-kicker">Python brain tests</div>
+  <h2>brain/tests/test_timeline.py</h2>
+  <div class="entries">
+    
+<article class="entry" id="brain-tests-test-timeline-py-1">
+  <h3>parse_timestamp(None) falls back to the epoch default, not &quot;&quot; — a falsy Created value...</h3>
+  <p>parse_timestamp(None) falls back to the epoch default, not &quot;&quot; — a falsy Created value no longer means &quot;excluded from the timeline&quot; the way the old dict-walking version treated an empty string; it&#x27;s a normal (if degenerate) timestamp now.</p>
+  <div class="marker">(brain/tests/test_timeline.py, line 45–48)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="gui-src-main-rs" data-page="gui-src-main-rs">
+  <div class="page-kicker">GUI (bt-gui)</div>
+  <h2>gui/src/main.rs</h2>
+  <div class="entries">
+    
+<article class="entry" id="gui-src-main-rs-1">
+  <h3>One step of ingest progress, sent from the background thread that drives...</h3>
+  <p>One step of ingest progress, sent from the background thread that drives `blacktape-brain ingest-stream` to the UI-thread timer that consumes them. Unlike the old aligned-dict-per-batch shape, a batch no longer carries its own records here — `DbPath` just tells the UI where to query them from (see `parsers::run_query`), fetched per nav page on demand instead of held in memory for the whole run.</p>
+  <div class="marker">(gui/src/main.rs, line 16–21)</div>
+</article>
+<article class="entry" id="gui-src-main-rs-2">
+  <h3>Fetches whichever page is currently selected from the brain&#x27;s `query` subcommands...</h3>
+  <p>Fetches whichever page is currently selected from the brain&#x27;s `query` subcommands against the finished (or in-progress) SQLite database, rather than rendering from an in-memory aligned blob — the query layer does the filtering/aggregation, this just formats the response. Covers the plain-text pages (HOME/FRIENDS/GOOGLE); GPS (index 1) is handled separately by `refresh_gps_map` (pushes data to the standalone map window instead of formatting a text blob) and CHAT (index 4) by `load_conversation_boxes`/`fetch_conversation_messages` below.</p>
+  <div class="marker">(gui/src/main.rs, line 49–56)</div>
+</article>
+<article class="entry" id="gui-src-main-rs-3">
+  <h3>`signals` (not `explore`&#x27;s 80-row preview) — every google_signals row, each with...</h3>
+  <p>`signals` (not `explore`&#x27;s 80-row preview) — every google_signals row, each with `gps_point` set to whichever GPS point is closest to it in time (see blacktape_brain.signals.nearest_gps_point), or `null` if nothing was recorded nearby enough to trust.</p>
+  <div class="marker">(gui/src/main.rs, line 69–72)</div>
+</article>
+<article class="entry" id="gui-src-main-rs-4">
+  <h3>Queries `blacktape-brain query map --group-by-day` (see...</h3>
+  <p>Queries `blacktape-brain query map --group-by-day` (see `blacktape_brain.mapview.query_bbox_by_day`) and sends the full `{day: [points]}` object to the standalone map window, spawning it if it isn&#x27;t already running (see `mapview_client::ensure_running_and_send`). Unlike the CHAT page&#x27;s conversation boxes, day-group selection/deselection, single-point selection, chronological next/prev navigation, and the chronological line-drawing toggle all live entirely client-side in the map window&#x27;s own side panel (see `gui/ui/mapview.html`) — this function&#x27;s only job is getting the full dataset there; it doesn&#x27;t track any selection state itself, so it&#x27;s safe to call again on every GPS nav visit or ingest batch without losing anything the map window is doing with what it already has, beyond the panel&#x27;s own selection resetting to &quot;all shown&quot; on each resend (a full-dataset resend has no way to know what was selected before it, the same tradeoff `refresh_page` already accepts for the CHAT page&#x27;s expanded/loaded state).</p>
+  <div class="marker">(gui/src/main.rs, line 86–101)</div>
+</article>
+<article class="entry" id="gui-src-main-rs-5">
+  <h3>Queries `blacktape-brain query conversations` (a cheap GROUP BY over `chat_messages` —...</h3>
+  <p>Queries `blacktape-brain query conversations` (a cheap GROUP BY over `chat_messages` — see `store.list_conversations`) and builds one collapsed `ConversationBox` per conversation. `messages` starts empty and `loaded`/`expanded` start false: nothing here fetches any actual message content, only the summary needed to render a box.</p>
+  <div class="marker">(gui/src/main.rs, line 139–143)</div>
+</article>
+<article class="entry" id="gui-src-main-rs-6">
+  <h3>Queries `blacktape-brain query friends-grouped` (see...</h3>
+  <p>Queries `blacktape-brain query friends-grouped` (see `blacktape_brain.store.list_friends_grouped`) and builds one `FriendRow` per grouped identity for the FRIENDS page&#x27;s table — replaces the old raw-JSON dump of `friend_records` with the same &quot;one row per person, categories combined&quot; grouping the CHAT page already does for conversations.</p>
+  <div class="marker">(gui/src/main.rs, line 169–174)</div>
+</article>
+<article class="entry" id="gui-src-main-rs-7">
+  <h3>One active FRIENDS-table sort key</h3>
+  <p>One active FRIENDS-table sort key: which `FriendRow` field, and ascending vs. descending. Kept as an ordered `Vec` (index 0 = primary key) rather than a single field, so clicking IDENTITY then shift-clicking CATEGORIES then shift-clicking MODIFIED sorts recursively — identity first, categories breaking ties within identical identities, modified breaking ties within those — instead of only ever supporting one sort field at a time.</p>
+  <div class="marker">(gui/src/main.rs, line 215–221)</div>
+</article>
+<article class="entry" id="gui-src-main-rs-8">
+  <h3>Multi-key stable sort over `rows` per `sort_state`.</h3>
+  <p>Multi-key stable sort over `rows` per `sort_state`. Applies keys from least to most significant, relying on `sort_by`&#x27;s stability so the final pass (the primary key, applied last) settles the overall order while every earlier pass&#x27;s relative ordering survives as the tiebreaker beneath it — the standard way to get compound sort semantics out of a series of single-key stable sorts.</p>
+  <div class="marker">(gui/src/main.rs, line 224–229)</div>
+</article>
+<article class="entry" id="gui-src-main-rs-9">
+  <h3>One column header&#x27;s sort-order badge (e.g.</h3>
+  <p>One column header&#x27;s sort-order badge (e.g. &quot;1 ▲&quot;) or &quot;&quot; if `field` isn&#x27;t part of the current sort chain — drives the FRIENDS table header labels in `ui/app.slint`.</p>
+  <div class="marker">(gui/src/main.rs, line 252–254)</div>
+</article>
+<article class="entry" id="gui-src-main-rs-10">
+  <h3>Re-sorts `rows_raw` per `sort_state` and pushes both the sorted rows and the four...</h3>
+  <p>Re-sorts `rows_raw` per `sort_state` and pushes both the sorted rows and the four column badges to the window — the single place both the initial FRIENDS-page load and every later header click funnel through, so they can never drift out of sync with each other.</p>
+  <div class="marker">(gui/src/main.rs, line 265–268)</div>
+</article>
+<article class="entry" id="gui-src-main-rs-11">
+  <h3>Fetches one conversation&#x27;s messages — the query a box&#x27;s first expand fires (see...</h3>
+  <p>Fetches one conversation&#x27;s messages — the query a box&#x27;s first expand fires (see `store.list_chat_messages(conn, conversation=...)`). Capped at 500 so a single very long conversation can&#x27;t stall the UI thread; a real &quot;load more&quot; control is future work if that cap ever bites in practice.</p>
+  <div class="marker">(gui/src/main.rs, line 279–283)</div>
+</article>
+<article class="entry" id="gui-src-main-rs-12">
+  <h3>Re-renders whichever page is currently selected against `db_path`.</h3>
+  <p>Re-renders whichever page is currently selected against `db_path`. Pages 0/2/3 are the plain-text `render_body_for` pages; page 4 (CHAT) loads collapsed conversation boxes and stores the backing model in `conversation_model` so `on_conversation_toggled` can mutate individual rows later (fetching one conversation&#x27;s messages) without re-running the summary query; page 1 (GPS) pushes the full dataset to the standalone map window (see `refresh_gps_map`) and shows a short summary here instead of any per-row list.</p>
+  <div class="marker">(gui/src/main.rs, line 307–314)</div>
+</article>
+<article class="entry" id="gui-src-main-rs-13">
+  <h3>Set once ingestion locates blacktape-brain and starts inserting into a database; used...</h3>
+  <p>Set once ingestion locates blacktape-brain and starts inserting into a database; used both by the background ingest thread&#x27;s own progress reporting and by on-demand nav queries afterward.</p>
+  <div class="marker">(gui/src/main.rs, line 366–368)</div>
+</article>
+<article class="entry" id="gui-src-main-rs-14">
+  <h3>Backing model for the CHAT page&#x27;s conversation boxes — kept separately from the window...</h3>
+  <p>Backing model for the CHAT page&#x27;s conversation boxes — kept separately from the window property so `on_conversation_toggled` can mutate one row (`set_row_data`) instead of re-querying and rebuilding the whole list just to expand a single box.</p>
+  <div class="marker">(gui/src/main.rs, line 371–374)</div>
+</article>
+<article class="entry" id="gui-src-main-rs-15">
+  <h3>Lazily spawned the first time the GPS page is visited — see...</h3>
+  <p>Lazily spawned the first time the GPS page is visited — see `mapview_client::ensure_running_and_send`.</p>
+  <div class="marker">(gui/src/main.rs, line 376–377)</div>
+</article>
+<article class="entry" id="gui-src-main-rs-16">
+  <h3>Unsorted FRIENDS rows as last fetched from the database, kept separately from the...</h3>
+  <p>Unsorted FRIENDS rows as last fetched from the database, kept separately from the window&#x27;s (sorted) `friend-rows` property so a header click can re-sort without re-querying — see `apply_and_set_friend_sort`.</p>
+  <div class="marker">(gui/src/main.rs, line 379–382)</div>
+</article>
+<article class="entry" id="gui-src-main-rs-17">
+  <h3>Nav selection re-queries the database for whatever page was picked.</h3>
+  <p>Nav selection re-queries the database for whatever page was picked.</p>
+  <div class="marker">(gui/src/main.rs, line 387)</div>
+</article>
+<article class="entry" id="gui-src-main-rs-18">
+  <h3>FRIENDS column header clicks</h3>
+  <p>FRIENDS column header clicks: see `FriendSortState`&#x27;s doc comment for the click/shift-click semantics.</p>
+  <div class="marker">(gui/src/main.rs, line 417–418)</div>
+</article>
+<article class="entry" id="gui-src-main-rs-19">
+  <h3>Expanding/collapsing one conversation box.</h3>
+  <p>Expanding/collapsing one conversation box. First expand fetches that conversation&#x27;s messages (see `fetch_conversation_messages`); subsequent toggles just flip `expanded` and reuse the cached `messages`/`loaded` already on the row.</p>
+  <div class="marker">(gui/src/main.rs, line 446–449)</div>
+</article>
+<article class="entry" id="gui-src-main-rs-20">
+  <h3>Insert Data</h3>
+  <p>Insert Data: pick a directory, then run `blacktape-brain ingest-stream` against it.</p>
+<p>The brain (not the GUI) decides how to batch the export dir&#x27;s files across the bt-parse-* binaries — smallest-file-first, so a directory with many small files and a few large ones streams progress out quickly instead of one parser call blocking on the whole export at once (see brain/src/blacktape_brain/planner.py). Each batch is inserted straight into a SQLite database as it&#x27;s parsed (see brain/src/blacktape_brain/store.py) rather than accumulated in memory; the GUI&#x27;s job is just to run the ingest on a background thread, report progress, and query the database on-demand per nav page once (or while) it&#x27;s populated — no more holding a whole aligned dataset in memory.</p>
+<p>`active_timer` just keeps the current run&#x27;s Timer alive — Slint stops a Timer as soon as it&#x27;s dropped, so it can&#x27;t live only inside the `on_insert_data` closure.</p>
+  <div class="marker">(gui/src/main.rs, line 478–495)</div>
+</article>
+<article class="entry" id="gui-src-main-rs-21">
+  <h3>At most one message handled per tick.</h3>
+  <p>At most one message handled per tick.</p>
+  <div class="marker">(gui/src/main.rs, line 611)</div>
+</article>
+<article class="entry" id="gui-src-main-rs-22">
+  <h3>Re-render the currently selected page as soon as there&#x27;s a database to query, so early...</h3>
+  <p>Re-render the currently selected page as soon as there&#x27;s a database to query, so early batches show up before the whole ingest finishes.</p>
+  <div class="marker">(gui/src/main.rs, line 621–623)</div>
+</article>
+<article class="entry" id="gui-src-main-rs-23">
+  <h3>Insert File(s)</h3>
+  <p>Insert File(s): pick one or more individual files instead of a whole export directory, then run `blacktape-brain ingest-stream --files ...` against exactly those. Otherwise identical to on_insert_data above — same batch-progress protocol, same background thread + polling timer — since `blacktape_brain` itself is what decides how the given files get batched (`planner.plan_batches_for_files`); the GUI&#x27;s only job is picking which files and running the brain.</p>
+  <div class="marker">(gui/src/main.rs, line 658–665)</div>
+</article>
+<article class="entry" id="gui-src-main-rs-24">
+  <h3>Purge Data</h3>
+  <p>Purge Data: deletes the current session&#x27;s SQLite database (see `blacktape_brain.cli.purge`) and resets the GUI back to its fresh-boot, no-data state. Synchronous rather than backgrounded — it&#x27;s just a file delete, not a parse — but still gated behind `busy` so it can&#x27;t race an in-flight ingest.</p>
+  <div class="marker">(gui/src/main.rs, line 824–828)</div>
+</article>
+<article class="entry" id="gui-src-main-rs-25">
+  <h3>Note</h3>
+  <p>Note: doesn&#x27;t tell the standalone GPS map window (if open) to clear its now-stale points — future work, tracked alongside the rest of mapview_handle&#x27;s lifecycle.</p>
+  <div class="marker">(gui/src/main.rs, line 864–866)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="gui-src-parsers-rs" data-page="gui-src-parsers-rs">
+  <div class="page-kicker">GUI (bt-gui)</div>
+  <h2>gui/src/parsers.rs</h2>
+  <div class="entries">
+    
+<article class="entry" id="gui-src-parsers-rs-1">
+  <h3>Caps a spawned process&#x27;s virtual memory so a pathological export directory can&#x27;t...</h3>
+  <p>Caps a spawned process&#x27;s virtual memory so a pathological export directory can&#x27;t exhaust system memory and take the whole machine down — this is what happened when the GUI&#x27;s &quot;Insert Data&quot; was pointed at a `~/Downloads` directory instead of an actual export dir. 512 MiB is comfortably above what a real export needs, while still bounding the worst case. Applied to the `blacktape-brain` process itself; Unix rlimits are inherited across fork/exec, so it also bounds every `bt-parse-*` subprocess the brain spawns in turn, not just the brain process&#x27;s own footprint. Unix-only: there&#x27;s no portable equivalent of `setrlimit(RLIMIT_AS, ...)` on other platforms.</p>
+  <div class="marker">(gui/src/parsers.rs, line 4–13)</div>
+</article>
+<article class="entry" id="gui-src-parsers-rs-2">
+  <h3>SAFETY: the closure only calls `setrlimit`, which is async-signal-safe, so it&#x27;s sound...</h3>
+  <p>SAFETY: the closure only calls `setrlimit`, which is async-signal-safe, so it&#x27;s sound to run between `fork` and `exec`.</p>
+  <div class="marker">(gui/src/parsers.rs, line 20–21)</div>
+</article>
+<article class="entry" id="gui-src-parsers-rs-3">
+  <h3>Locates the `blacktape-brain` console script (`brain/pyproject.toml`&#x27;s...</h3>
+  <p>Locates the `blacktape-brain` console script (`brain/pyproject.toml`&#x27;s `[project.scripts]` entry, installed by `pip install -e .`). Checked on PATH first (works if the brain&#x27;s venv is active, or the package was installed globally), then at the sibling `brain/.venv/bin/` — the location `CLAUDE.md`&#x27;s build instructions install it to by default.</p>
+<p>The GUI no longer shells out to the `bt-parse-*` binaries directly: `blacktape_brain` now owns deciding how to batch an export dir&#x27;s files across those binaries (smallest-file-first, so results stream out quickly instead of one parser blocking on the whole export at once — see `brain/src/blacktape_brain/planner.py`), so the GUI&#x27;s job is just to run the brain and consume what it streams back.</p>
+  <div class="marker">(gui/src/parsers.rs, line 50–61)</div>
+</article>
+<article class="entry" id="gui-src-parsers-rs-4">
+  <h3>Spawns `blacktape-brain ingest-stream &lt;export_dir&gt;` with stdout piped so the caller...</h3>
+  <p>Spawns `blacktape-brain ingest-stream &lt;export_dir&gt;` with stdout piped so the caller can read one NDJSON event per completed batch as it arrives (see `blacktape_brain.cli.stream_events`), instead of blocking until the whole export has been processed. Each event is now a thin progress record (record counts, not the records themselves) — the actual data lives in the SQLite database at the event&#x27;s `db_path` and is fetched afterward via `run_query`.</p>
+  <div class="marker">(gui/src/parsers.rs, line 85–91)</div>
+</article>
+<article class="entry" id="gui-src-parsers-rs-5">
+  <h3>Spawns `blacktape-brain ingest-stream --files &lt;file1&gt; &lt;file2&gt; ...` — the...</h3>
+  <p>Spawns `blacktape-brain ingest-stream --files &lt;file1&gt; &lt;file2&gt; ...` — the single/multi-file upload path. No `export_dir` positional is passed; `blacktape-brain` derives an equivalent root from the common parent of the given files itself (see `cli._common_root`), so a single picked file and several picked files across different export subfolders both just work as a plain file list here. Stdout piping and the memory rlimit are identical to `spawn_ingest_stream`.</p>
+  <div class="marker">(gui/src/parsers.rs, line 104–110)</div>
+</article>
+<article class="entry" id="gui-src-parsers-rs-6">
+  <h3>Runs `blacktape-brain purge --db &lt;db_path&gt;` synchronously, deleting the database that...</h3>
+  <p>Runs `blacktape-brain purge --db &lt;db_path&gt;` synchronously, deleting the database that backs the current session so a fresh Insert Data/Insert Files run starts from empty. Returns the printed path on success (or the &quot;(nothing to purge)&quot; message when there was no database file).</p>
+  <div class="marker">(gui/src/parsers.rs, line 124–127)</div>
+</article>
+<article class="entry" id="gui-src-parsers-rs-7">
+  <h3>Runs `blacktape-brain query &lt;subcommand&gt; --db &lt;db_path&gt; [extra_args...]` synchronously...</h3>
+  <p>Runs `blacktape-brain query &lt;subcommand&gt; --db &lt;db_path&gt; [extra_args...]` synchronously and parses its stdout as JSON. Used once ingestion finishes to fetch each nav page&#x27;s data on demand — the GUI no longer holds a whole aligned dataset in memory, just whatever the current page asked for.</p>
+  <div class="marker">(gui/src/parsers.rs, line 147–151)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="gui-src-mapview-client-rs" data-page="gui-src-mapview-client-rs">
+  <div class="page-kicker">GUI (bt-gui)</div>
+  <h2>gui/src/mapview_client.rs</h2>
+  <div class="entries">
+    
+<article class="entry" id="gui-src-mapview-client-rs-1">
+  <h3>Spawns and drives `bt-mapview` (`src/bin/bt-mapview.rs`) — the standalone GPS map...</h3>
+  <p>Spawns and drives `bt-mapview` (`src/bin/bt-mapview.rs`) — the standalone GPS map window — over piped stdin, mirroring how `parsers.rs` drives `blacktape-brain` over piped stdout. Kept lazy: no process is spawned until the GPS page is first visited (see `main.rs::refresh_gps_map`).</p>
+  <div class="marker">(gui/src/mapview_client.rs, line 1–5)</div>
+</article>
+<article class="entry" id="gui-src-mapview-client-rs-2">
+  <h3>`false` once the user has closed the map window — `bt-mapview` exits on...</h3>
+  <p>`false` once the user has closed the map window — `bt-mapview` exits on `CloseRequested`/stdin EOF, so a dead handle means the next toggle should spawn a fresh one rather than writing into a closed pipe.</p>
+  <div class="marker">(gui/src/mapview_client.rs, line 15–18)</div>
+</article>
+<article class="entry" id="gui-src-mapview-client-rs-3">
+  <h3>`Child`&#x27;s own Drop does not kill the process — without this, closing bt-gui would...</h3>
+  <p>`Child`&#x27;s own Drop does not kill the process — without this, closing bt-gui would leave an orphaned map window/webview process behind.</p>
+  <div class="marker">(gui/src/mapview_client.rs, line 32–34)</div>
+</article>
+<article class="entry" id="gui-src-mapview-client-rs-4">
+  <h3>Locates the `bt-mapview` binary.</h3>
+  <p>Locates the `bt-mapview` binary. Checked first alongside `bt-gui`&#x27;s own executable — `cargo build` puts every binary in a package into the same target dir, so this is where it&#x27;ll be for any normal build — then falling back to PATH.</p>
+  <div class="marker">(gui/src/mapview_client.rs, line 46–49)</div>
+</article>
+<article class="entry" id="gui-src-mapview-client-rs-5">
+  <h3>Ensures a live `bt-mapview` process is running, spawning a fresh one if `handle` is...</h3>
+  <p>Ensures a live `bt-mapview` process is running, spawning a fresh one if `handle` is empty or its process already exited (e.g. the user closed the map window), then sends it `data_json` (a JSON object literal — see `bt-mapview.rs`&#x27;s protocol doc).</p>
+  <div class="marker">(gui/src/mapview_client.rs, line 74–77)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="gui-src-bin-bt-mapview-rs" data-page="gui-src-bin-bt-mapview-rs">
+  <div class="page-kicker">GUI (bt-gui)</div>
+  <h2>gui/src/bin/bt-mapview.rs</h2>
+  <div class="entries">
+    
+<article class="entry" id="gui-src-bin-bt-mapview-rs-1">
+  <h3>Standalone map window for the GPS day-group view (see the GPS page in `ui/app.slint`...</h3>
+  <p>Standalone map window for the GPS day-group view (see the GPS page in `ui/app.slint` and `mapview_client.rs`, which spawns this binary).</p>
+<p>Runs as its own OS process with its own `tao` event loop/window and `wry` webview, rather than trying to embed a webview inside `bt-gui`&#x27;s own Slint window — Slint&#x27;s winit backend doesn&#x27;t officially support attaching a child native view to part of its window, so a second, independently-driven native window is the robust option (see the project&#x27;s design discussion for this feature). It&#x27;s still fully controlled by the main GUI process: `mapview_client.rs` spawns it with piped stdin and writes one NDJSON command per line, mirroring how `parsers.rs` already drives `blacktape-brain` over piped stdout.</p>
+<p>Protocol (stdin, one JSON object per line, full-replace each time): {&quot;2024-01-01&quot;: [{&quot;lat&quot;: f64, &quot;lon&quot;: f64, &quot;timestamp&quot;: str, ...}, ...], ...} — exactly `blacktape_brain.mapview.query_bbox_by_day`&#x27;s own output shape, passed straight through from `refresh_gps_map` in `main.rs`. Closing stdin (parent exited or dropped the handle) exits this process.</p>
+<p>Day-group selection/deselection, single-point selection, chronological next/prev navigation, and the chronological line-drawing toggle all live client-side in `ui/mapview.html`&#x27;s own side panel — this binary&#x27;s job is just getting the full dataset there and keeping the window alive; it holds no view/selection state of its own.</p>
+<p>Renders via Leaflet + CARTO dark-matter tiles loaded over the network — this is the one part of project-blacktape that isn&#x27;t offline-only, a deliberate tradeoff accepted so the map has real street/imagery context instead of bare lat/lon dots (see the project design discussion this was chosen over an offline-tiles or no-basemap alternative). Dark tiles specifically were chosen to match the rest of the app&#x27;s dark color scheme (see `ui/app.slint`&#x27;s palette, mirrored in `ui/mapview.html`&#x27;s CSS).</p>
+  <div class="marker">(gui/src/bin/bt-mapview.rs, line 1–33)</div>
+</article>
+<article class="entry" id="gui-src-bin-bt-mapview-rs-2">
+  <h3>Background thread owns stdin so the event loop thread never blocks on a read; each...</h3>
+  <p>Background thread owns stdin so the event loop thread never blocks on a read; each line is forwarded as a user event instead.</p>
+  <div class="marker">(gui/src/bin/bt-mapview.rs, line 52–53)</div>
+</article>
+<article class="entry" id="gui-src-bin-bt-mapview-rs-3">
+  <h3>`bt-gui` starts pushing GPS data over stdin as soon as this process spawns, which can...</h3>
+  <p>`bt-gui` starts pushing GPS data over stdin as soon as this process spawns, which can easily race the webview&#x27;s own HTML/JS load (it fetches Leaflet from a CDN before `window.setData` even gets defined — see mapview.html). Without this, a `SetData` event that arrives before the page&#x27;s own script has run calls into a `window.setData` that doesn&#x27;t exist yet; `evaluate_script`&#x27;s error is silently dropped by the `let _ =` below, so the points just never appear and there&#x27;s no visible failure. This initialization script runs before any page script on every navigation, so `window.setData` always exists immediately, queuing calls until the page&#x27;s real implementation (see mapview.html) replaces it and flushes the queue.</p>
+  <div class="marker">(gui/src/bin/bt-mapview.rs, line 76–87)</div>
+</article>
+<article class="entry" id="gui-src-bin-bt-mapview-rs-4">
+  <h3>`data_json` is already a JSON object literal (see mapview_client::send_points) —...</h3>
+  <p>`data_json` is already a JSON object literal (see mapview_client::send_points) — passed straight through to the page&#x27;s own `setData` function rather than re-serialized here.</p>
+  <div class="marker">(gui/src/bin/bt-mapview.rs, line 115–118)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="gui-ui-app-slint" data-page="gui-ui-app-slint">
+  <div class="page-kicker">GUI (bt-gui)</div>
+  <h2>gui/ui/app.slint</h2>
+  <div class="entries">
+    
+<article class="entry" id="gui-ui-app-slint-1">
+  <h3>One grouped friend identity — see blacktape_brain.store.list_friends_grouped.</h3>
+  <p>One grouped friend identity — see blacktape_brain.store.list_friends_grouped. `categories` arrives pre-joined (e.g. &quot;blocked_users, friends&quot;) since Slint has no string-list-to-display helper as convenient as doing the join on the Rust side once.</p>
+  <div class="marker">(gui/ui/app.slint, line 14–17)</div>
+</article>
+<article class="entry" id="gui-ui-app-slint-2">
+  <h3>One collapsed conversation box.</h3>
+  <p>One collapsed conversation box. `messages` starts empty and `loaded` stays false until the box is first expanded — the click handler in main.rs fetches that one conversation&#x27;s messages on demand (see blacktape_brain.store.list_chat_messages(conn, conversation=...)) and fills `messages` in, rather than every box&#x27;s messages being fetched up front when the CHAT page loads.</p>
+  <div class="marker">(gui/ui/app.slint, line 25–30)</div>
+</article>
+<article class="entry" id="gui-ui-app-slint-3">
+  <h3>Per-column sort-order badges for the FRIENDS table (e.g.</h3>
+  <p>Per-column sort-order badges for the FRIENDS table (e.g. &quot;1 ▲&quot;, &quot;2 ▼&quot;, or &quot;&quot; when that column isn&#x27;t part of the current sort chain) — computed on the Rust side from whatever sort keys are currently active, since Slint has no sort/compare primitive of its own to do this with. See `friend-sort-clicked` below.</p>
+  <div class="marker">(gui/ui/app.slint, line 59–63)</div>
+</article>
+<article class="entry" id="gui-ui-app-slint-4">
+  <h3>Fired when a FRIENDS column header is clicked.</h3>
+  <p>Fired when a FRIENDS column header is clicked. `shift` true means &quot;add this as the next tiebreaker under the current sort&quot; instead of replacing it outright — clicking IDENTITY then shift-clicking CATEGORIES then shift-clicking MODIFIED sorts by all three, recursively: identity first, categories breaking ties within identical identities, modified breaking ties within those. A plain click on a field already at the front of the chain flips its direction instead of duplicating it.</p>
+  <div class="marker">(gui/ui/app.slint, line 74–81)</div>
+</article>
+<article class="entry" id="gui-ui-app-slint-5">
+  <h3>Drives the busy indicator&#x27;s breathing glow — toggling this on an interval and letting...</h3>
+  <p>Drives the busy indicator&#x27;s breathing glow — toggling this on an interval and letting `animate` interpolate between the two states is what makes the orb pulse smoothly instead of snapping.</p>
+  <div class="marker">(gui/ui/app.slint, line 88–90)</div>
+</article>
+<article class="entry" id="gui-ui-app-slint-6">
+  <h3>atmospheric glow blobs, echoing the mockup&#x27;s radial gradients</h3>
+  <p>atmospheric glow blobs, echoing the mockup&#x27;s radial gradients</p>
+  <div class="marker">(gui/ui/app.slint, line 111)</div>
+</article>
+<article class="entry" id="gui-ui-app-slint-7">
+  <h3>top bar</h3>
+  <p>top bar</p>
+  <div class="marker">(gui/ui/app.slint, line 145)</div>
+</article>
+<article class="entry" id="gui-ui-app-slint-8">
+  <h3>Busy indicator</h3>
+  <p>Busy indicator: a fixed-footprint container so the pulsing glow&#x27;s size animation never reflows the status text next to it. Idle state is unchanged (small blinking green dot); while busy, a soft amber halo + solid core breathe in sync, driven by `pulse-on` above.</p>
+  <div class="marker">(gui/ui/app.slint, line 166–171)</div>
+</article>
+<article class="entry" id="gui-ui-app-slint-9">
+  <h3>body</h3>
+  <p>body: sidebar + main panel</p>
+  <div class="marker">(gui/ui/app.slint, line 217)</div>
+</article>
+<article class="entry" id="gui-ui-app-slint-10">
+  <h3>sidebar</h3>
+  <p>sidebar</p>
+  <div class="marker">(gui/ui/app.slint, line 222)</div>
+</article>
+<article class="entry" id="gui-ui-app-slint-11">
+  <h3>divider between nav and data-management actions</h3>
+  <p>divider between nav and data-management actions</p>
+  <div class="marker">(gui/ui/app.slint, line 246)</div>
+</article>
+<article class="entry" id="gui-ui-app-slint-12">
+  <h3>Data-management actions — always visible (not gated on has-data), so more data can be...</h3>
+  <p>Data-management actions — always visible (not gated on has-data), so more data can be added or the current session purged at any time, not just from the pre-data empty-panel prompt.</p>
+  <div class="marker">(gui/ui/app.slint, line 252–255)</div>
+</article>
+<article class="entry" id="gui-ui-app-slint-13">
+  <h3>main data portal panel</h3>
+  <p>main data portal panel</p>
+  <div class="marker">(gui/ui/app.slint, line 286)</div>
+</article>
+<article class="entry" id="gui-ui-app-slint-14">
+  <h3>FRIENDS page (nav index 2)</h3>
+  <p>FRIENDS page (nav index 2): one row per grouped friend identity (see blacktape_brain.store. list_friends_grouped) instead of a raw JSON dump — a person who&#x27;s both a friend and blocked, say, shows as one row with both categories rather than two disconnected records.</p>
+  <div class="marker">(gui/ui/app.slint, line 323–328)</div>
+</article>
+<article class="entry" id="gui-ui-app-slint-15">
+  <h3>CHAT page (nav index 4)</h3>
+  <p>CHAT page (nav index 4): one collapsed box per conversation. Clicking a box&#x27;s header toggles it; main.rs fetches that conversation&#x27;s messages lazily on first expand rather than the CHAT page loading every message for every conversation up front.</p>
+  <div class="marker">(gui/ui/app.slint, line 417–421)</div>
+</article>
+<article class="entry" id="gui-ui-app-slint-16">
+  <h3>header — always visible, click toggles expansion</h3>
+  <p>header — always visible, click toggles expansion</p>
+  <div class="marker">(gui/ui/app.slint, line 446)</div>
+</article>
+<article class="entry" id="gui-ui-app-slint-17">
+  <h3>expanded body — only rendered once the box is open</h3>
+  <p>expanded body — only rendered once the box is open</p>
+  <div class="marker">(gui/ui/app.slint, line 470)</div>
+</article>
+<article class="entry" id="gui-ui-app-slint-18">
+  <h3>system log</h3>
+  <p>system log</p>
+  <div class="marker">(gui/ui/app.slint, line 501)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="gui-ui-mapview-html" data-page="gui-ui-mapview-html">
+  <div class="page-kicker">GUI (bt-gui)</div>
+  <h2>gui/ui/mapview.html</h2>
+  <div class="entries">
+    
+<article class="entry" id="gui-ui-mapview-html-1">
+  <h3>Dark theme for Leaflet&#x27;s own zoom control</h3>
+  <p>Dark theme for Leaflet&#x27;s own zoom control</p>
+  <div class="marker">(gui/ui/mapview.html, line 98)</div>
+</article>
+<article class="entry" id="gui-ui-mapview-html-2">
+  <h3>Full rebuild of markers/bounds from whichever days are currently selected — called on...</h3>
+  <p>Full rebuild of markers/bounds from whichever days are currently selected — called on `setData` and every day-checkbox toggle. Points are timestamp-sorted (lexical sort is chronological — see align.to_local_time&#x27;s &quot;YYYY-MM-DD HH:MM:SS&quot; output format) so PREV/NEXT and DRAW LINE both walk/connect them in time order, regardless of which days they came from.</p>
+  <div class="marker">(gui/ui/mapview.html, line 238–243)</div>
+</article>
+<article class="entry" id="gui-ui-mapview-html-3">
+  <h3>Called by bt-mapview.rs (see UserEvent::SetData) with the full `{day</h3>
+  <p>Called by bt-mapview.rs (see UserEvent::SetData) with the full `{day: [points]}` object every time the GPS page is (re)loaded on the Rust side — a full replace, matching `refresh_gps_map`&#x27;s doc comment. Every day starts selected (shown) here; the panel above is what lets the user deselect/reselect from that starting point.</p>
+  <div class="marker">(gui/ui/mapview.html, line 276–280)</div>
+</article>
+<article class="entry" id="gui-ui-mapview-html-4">
+  <h3>Flush any `setData` calls that arrived before this script ran and replaced the...</h3>
+  <p>Flush any `setData` calls that arrived before this script ran and replaced the initialization script&#x27;s queuing stub (see `with_initialization_script` in bt-mapview.rs) — otherwise the very first batch of points sent right after this window spawns is lost.</p>
+  <div class="marker">(gui/ui/mapview.html, line 289–292)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="gui-cargo-toml" data-page="gui-cargo-toml">
+  <div class="page-kicker">GUI (bt-gui)</div>
+  <h2>gui/Cargo.toml</h2>
+  <div class="entries">
+    
+<article class="entry" id="gui-cargo-toml-1">
+  <h3>bt-mapview (src/bin/bt-mapview.rs) only — a separate native window/process for the GPS...</h3>
+  <p>bt-mapview (src/bin/bt-mapview.rs) only — a separate native window/process for the GPS day-group map (see AppWindow&#x27;s GPS page in ui/app.slint and `mapview_client.rs`), kept as its own OS window driven over piped stdin rather than embedded in Slint&#x27;s own window/canvas (see that file&#x27;s module doc comment for why).</p>
+  <div class="marker">(gui/Cargo.toml, line 11–15)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="scripts-launch-gui-sh" data-page="scripts-launch-gui-sh">
+  <div class="page-kicker">Scripts</div>
+  <h2>scripts/launch-gui.sh</h2>
+  <div class="entries">
+    
+<article class="entry" id="scripts-launch-gui-sh-1">
+  <h3>Builds parsers/ and gui/ (release) and launches the bt-gui desktop shell with PATH set...</h3>
+  <p>Builds parsers/ and gui/ (release) and launches the bt-gui desktop shell with PATH set up so it can always find the bt-parse-* binaries.</p>
+<p>gui/ is a standalone crate (not a member of the parsers/ Cargo workspace). It and parsers/ resolve overlapping transitive dependencies (e.g. rand, integer-sqrt) to different feature sets, so building both into one shared target dir corrupts each other&#x27;s build fingerprints (&quot;can&#x27;t find crate&quot; errors for rlibs that exist on disk under a different hash) — this bit a real dev machine that had $CARGO_TARGET_DIR set globally for every Rust project. This script therefore ignores any ambient $CARGO_TARGET_DIR and always builds parsers/ and gui/ into their own project-local target/ dirs.</p>
+  <div class="marker">(scripts/launch-gui.sh, line 2–12)</div>
+</article>
+  </div>
+</section>
+
+<section class="page" id="scripts-hooks-pre-commit" data-page="scripts-hooks-pre-commit">
+  <div class="page-kicker">Scripts</div>
+  <h2>scripts/hooks/pre-commit</h2>
+  <div class="entries">
+    
+<article class="entry" id="scripts-hooks-pre-commit-1">
+  <h3>Blocks commits that would introduce real personal-data export samples (Snapchat/Google...</h3>
+  <p>Blocks commits that would introduce real personal-data export samples (Snapchat/Google Takeout exports or their derived output), even if staged with `git add -f`. .gitignore alone doesn&#x27;t stop a forced add.</p>
+<p>This script is versioned at scripts/hooks/pre-commit. It has no effect until symlinked into .git/hooks/ (which git does not track) — see README.md setup instructions.</p>
+<p>To bypass deliberately (should be rare — double check first): git commit --no-verify</p>
+  <div class="marker">(scripts/hooks/pre-commit, line 2–11)</div>
+</article>
+  </div>
+</section>
+  </main>
+</div>
+
+<script>
+(function() {
+  var links = document.querySelectorAll('.nav-link');
+  var pages = document.querySelectorAll('.page');
+  var intro = document.getElementById('intro-block');
+
+  function show(slug) {
+    pages.forEach(function(p) { p.classList.toggle('active', p.dataset.page === slug); });
+    links.forEach(function(l) { l.classList.toggle('active', l.dataset.target === slug); });
+    intro.style.display = 'none';
+  }
+
+  links.forEach(function(l) {
+    l.addEventListener('click', function(e) {
+      e.preventDefault();
+      var slug = l.dataset.target;
+      show(slug);
+      history.replaceState(null, '', '#' + slug);
+      document.querySelector('.main').scrollTo({top: 0, behavior: 'instant'});
+    });
+  });
+
+  var initial = location.hash ? location.hash.slice(1) : null;
+  if (initial && document.getElementById(initial)) {
+    show(initial);
+  } else {
+    show('parsers-common-src-lib-rs');
+  }
+})();
+</script>
